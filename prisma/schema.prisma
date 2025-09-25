@@ -9,7 +9,8 @@ datasource db {
 
 enum Role {
     USER
-    SELLER
+    STUDENT
+    LAWLITIGATORS
     ADMIN
 }
 
@@ -23,6 +24,7 @@ model User {
     role                 Role      @default(USER)
     roleExplicitlyChosen Boolean   @default(false)
 	createdAt            DateTime  @default(now())
+    onboardingCompleted  Boolean   @default(false)
 
     // Email verification
     verificationToken    String?   @unique

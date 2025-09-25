@@ -1,7 +1,7 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
-import { PrismaAdapter } from "@auth/prisma-adapter"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import NextAuth from "next-auth";
 import { Role } from '@prisma/client';
 import bcrypt from "bcryptjs";
@@ -54,7 +54,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 								image: freshUser.image,
 								role: freshUser.role,
 								roleExplicitlyChosen: freshUser.roleExplicitlyChosen,
-								onboardingCompleted: freshUser.onboardingCompleted,
+								onboardingCompleted: freshUser.onboardingCompleted!,
 							};
 						} else {
 							throw new Error("Email verification not completed");
@@ -80,6 +80,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 						image: user.image,
 						role: user.role,
 						roleExplicitlyChosen: user.roleExplicitlyChosen,
+						onboardingCompleted: user.onboardingCompleted!,
 					};
 				} catch (error) {
 					console.error("Authorization error:", error);
