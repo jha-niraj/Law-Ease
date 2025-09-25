@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { usePathname, useRouter } from "next/navigation"
-import { LogOut, ChevronRight, UserPlus, BarChart3, MessageSquare, Home, Eye, Wallet } from "lucide-react"
+import { LogOut, ChevronRight, UserPlus, MessageSquare, Home, Bot, FileText, Users, BookOpen, Settings } from "lucide-react"
 import Link from "next/link"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { toast } from "sonner"
@@ -54,27 +54,39 @@ const Sidebar = ({ isCollapsed, toggleSidebar }: SidebarProps) => {
 			status: "active"
 		},
 		{
-			path: "validatehub",
-			name: "ValidateHub",
-			icon: <Eye className="h-5 w-5" />,
+			path: "ai-mentor",
+			name: "AI Mentor",
+			icon: <Bot className="h-5 w-5" />,
 			status: "active"
 		},
 		{
-			path: "wallet",
-			name: "Wallet",
-			icon: <Wallet className="h-5 w-5" />,
-			status: "active"
-		},
-		{
-			path: "analytics",
-			name: "Analytics",
-			icon: <BarChart3 className="h-5 w-5" />,
-			status: "active"
-		},
-		{
-			path: "feedback",
-			name: "Feedback",
+			path: "consultations",
+			name: "Consultations",
 			icon: <MessageSquare className="h-5 w-5" />,
+			status: "active"
+		},
+		{
+			path: "legal-library",
+			name: "Legal Library",
+			icon: <BookOpen className="h-5 w-5" />,
+			status: "active"
+		},
+		{
+			path: "lawyers",
+			name: "Find Lawyers",
+			icon: <Users className="h-5 w-5" />,
+			status: "active"
+		},
+		{
+			path: "documents",
+			name: "Documents",
+			icon: <FileText className="h-5 w-5" />,
+			status: "active"
+		},
+		{
+			path: "profile",
+			name: "Profile",
+			icon: <Settings className="h-5 w-5" />,
 			status: "active"
 		}
 	];
@@ -189,9 +201,9 @@ const Sidebar = ({ isCollapsed, toggleSidebar }: SidebarProps) => {
 												<div className="w-12 h-12 bg-gray-900 dark:bg-white rounded-lg flex items-center justify-center mx-auto mb-4">
 													<UserPlus className="w-6 h-6 text-white dark:text-gray-900" />
 												</div>
-												<h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Join ShunyaTech</h3>
+												<h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Join LawEase</h3>
 												<p className="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
-													Sign in to access your projects, manage team, and track development progress.
+													Sign in to access AI legal assistance, connect with lawyers, and manage your legal matters.
 												</p>
 												<Link href="/signin">
 													<Button className="w-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 rounded-lg">

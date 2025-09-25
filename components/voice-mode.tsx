@@ -9,7 +9,7 @@ interface VoiceModeProps {
   isActive: boolean
   onStart: () => void
   onEnd: () => void
-  sessionId?: string
+  sessionId?: string | null
 }
 
 export function VoiceMode({ isActive, onStart, onEnd, sessionId }: VoiceModeProps) {

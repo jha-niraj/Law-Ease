@@ -4,8 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "@/components/ui/badge"
-import { Bot, ArrowRight, Loader2, MessageSquare, Scale, Sparkles, Volume2 } from "lucide-react"
+import { Bot, ArrowRight, Loader2, Scale, Sparkles, Volume2 } from "lucide-react"
 import Link from "next/link"
 import { VoiceMode } from "@/components/voice-mode"
 import { 
@@ -95,7 +94,6 @@ export default function AIMentorPage() {
 		if (!consultationId) return
 
 		try {
-			
 			const result = await endVoiceConversation(consultationId)
 			if (result.success) {
 				setConversationSummary(result.summary || "Conversation completed successfully.")
@@ -123,67 +121,70 @@ export default function AIMentorPage() {
 	}
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50/30 to-emerald-50/50 p-6">
+		<div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50/30 to-emerald-50/50 dark:from-slate-900 dark:via-teal-900/30 dark:to-emerald-900/50 p-6">
 			<div className="max-w-4xl mx-auto space-y-8">
 				{/* Header */}
 				<div className="text-center space-y-4">
-					<Link href="/dashboard" className="inline-flex items-center text-teal-600 hover:text-teal-700 mb-4">
-						← Back to Dashboard
-					</Link>
-					<div className="space-y-2">
-						<h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-emerald-600">
-							AI Legal Mentor
-						</h1>
-						<p className="text-xl text-neutral-600">
-							Describe your legal problem and get instant AI-powered guidance
-						</p>
+					<div className="flex items-center justify-center space-x-3">
+						<div className="p-3 bg-gradient-to-br from-teal-500 to-emerald-600 rounded-2xl shadow-lg">
+							<Bot className="w-8 h-8 text-white" />
+						</div>
+						<h1 className="text-4xl font-bold text-gray-900 dark:text-white">AI Legal Mentor</h1>
 					</div>
-					<div className="flex justify-center space-x-2">
-						<Badge variant="outline" className="text-sm px-3 py-1">
-							<Bot className="w-4 h-4 mr-1" />
-							OpenAI Powered
-						</Badge>
-						<Badge variant="outline" className="text-sm px-3 py-1">
-							<Volume2 className="w-4 h-4 mr-1" />
-							Voice Conversations
-						</Badge>
-						<Badge variant="outline" className="text-sm px-3 py-1">
-							<Scale className="w-4 h-4 mr-1" />
-							Indian Law
-						</Badge>
+					<p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+						Get instant legal guidance powered by AI. Describe your legal issue and receive comprehensive analysis based on Indian law and constitution.
+					</p>
+				</div>
+
+				{/* Progress Steps */}
+				<div className="flex justify-center">
+					<div className="flex items-center space-x-4">
+						{['input', 'analyzing', 'preparing', 'ready', 'conversation', 'summary'].map((step, index) => {
+							const isActive = currentStep === step
+							const isCompleted = ['input', 'analyzing', 'preparing', 'ready', 'conversation', 'summary'].indexOf(currentStep) > index
+							
+							return (
+								<div key={step} className="flex items-center">
+									<div className={`
+										w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium
+										${isActive ? 'bg-teal-600 text-white' : isCompleted ? 'bg-emerald-600 text-white' : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-400'}
+									`}>
+										{index + 1}
+									</div>
+									{index < 5 && (
+										<div className={`w-8 h-0.5 ${isCompleted ? 'bg-emerald-600' : 'bg-gray-200 dark:bg-gray-700'}`} />
+									)}
+								</div>
+							)
+						})}
 					</div>
 				</div>
 
-				{/* Main Content */}
+				{/* Input Form */}
 				{currentStep === 'input' && (
-					<Card className="bg-white/80 backdrop-blur-sm border border-teal-200/50 shadow-xl">
-						<CardHeader className="text-center">
-							<CardTitle className="text-2xl text-teal-800">Describe Your Legal Problem</CardTitle>
-							<CardDescription className="text-lg">
-								Be as detailed as possible. Our AI will analyze your situation based on Indian laws and constitution.
+					<Card className="bg-white/80 backdrop-blur-sm border border-teal-200/50 shadow-xl dark:bg-gray-800/80 dark:border-teal-700/50">
+						<CardHeader>
+							<CardTitle className="text-2xl text-teal-800 dark:text-teal-200">Describe Your Legal Issue</CardTitle>
+							<CardDescription className="text-gray-600 dark:text-gray-400">
+								Provide as much detail as possible about your legal problem for better analysis
 							</CardDescription>
 						</CardHeader>
-						<CardContent className="space-y-6">
+						<CardContent>
 							<form onSubmit={handleSubmit} className="space-y-6">
-								<div className="space-y-2">
-									<Textarea
-										placeholder="Example: My landlord is asking me to vacate the property without giving proper notice. I have been living here for 2 years and have a rental agreement. What are my rights and what should I do?"
-										value={problem}
-										onChange={(e) => setProblem(e.target.value)}
-										className="min-h-[120px] border-teal-200 focus:border-teal-300 focus:ring-teal-200"
-										required
-									/>
-									<p className="text-sm text-neutral-500">
-										Minimum 20 characters required for analysis
-									</p>
-								</div>
+								<Textarea
+									placeholder="e.g., My landlord is trying to evict me without proper notice, or I need help understanding property inheritance laws in India..."
+									value={problem}
+									onChange={(e) => setProblem(e.target.value)}
+									rows={6}
+									className="resize-y border-teal-200 focus:border-teal-500 dark:border-teal-700 dark:focus:border-teal-400"
+								/>
 								<Button 
-									type="submit" 
-									size="lg" 
-									className="w-full bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-									disabled={problem.trim().length < 20}
+									type="submit"
+									size="lg"
+									className="w-full bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
 								>
-									Analyze My Legal Problem
+									<Sparkles className="mr-2 w-5 h-5" />
+									Analyze Legal Issue
 									<ArrowRight className="ml-2 w-5 h-5" />
 								</Button>
 							</form>
@@ -191,109 +192,104 @@ export default function AIMentorPage() {
 					</Card>
 				)}
 
+				{/* Analyzing State */}
 				{currentStep === 'analyzing' && (
-					<Card className="bg-white/80 backdrop-blur-sm border border-teal-200/50 shadow-xl">
+					<Card className="bg-white/80 backdrop-blur-sm border border-blue-200/50 shadow-xl dark:bg-gray-800/80 dark:border-blue-700/50">
 						<CardContent className="text-center space-y-6 py-12">
-							<div className="w-16 h-16 bg-gradient-to-br from-teal-500 to-emerald-600 rounded-full flex items-center justify-center mx-auto">
+							<div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto">
 								<Loader2 className="w-8 h-8 text-white animate-spin" />
 							</div>
 							<div className="space-y-2">
-								<h3 className="text-xl font-semibold text-teal-800">Analyzing Your Legal Issue</h3>
-								<p className="text-neutral-600">
-									Our AI is researching relevant Indian laws, constitutional articles, and legal procedures...
+								<h3 className="text-xl font-semibold text-blue-800 dark:text-blue-200">Analyzing Your Legal Issue</h3>
+								<p className="text-gray-600 dark:text-gray-400">
+									Our AI is researching Indian laws and constitutional provisions relevant to your case...
 								</p>
 							</div>
-							<div className="flex justify-center space-x-4 text-sm text-neutral-500">
-								<span className="flex items-center">
-									<Sparkles className="w-4 h-4 mr-1" />
-									Checking Constitution
-								</span>
-								<span className="flex items-center">
-									<Scale className="w-4 h-4 mr-1" />
-									Finding Relevant Laws
-								</span>
-								<span className="flex items-center">
-									<MessageSquare className="w-4 h-4 mr-1" />
-									Preparing Context
-								</span>
+							<div className="bg-blue-50 dark:bg-blue-950/50 p-4 rounded-lg">
+								<p className="text-sm text-blue-700 dark:text-blue-300">
+									⚖️ Analyzing constitutional articles, applicable laws, and your legal rights
+								</p>
 							</div>
 						</CardContent>
 					</Card>
 				)}
 
+				{/* Preparing Voice Session */}
 				{currentStep === 'preparing' && (
-					<Card className="bg-white/80 backdrop-blur-sm border border-teal-200/50 shadow-xl">
+					<Card className="bg-white/80 backdrop-blur-sm border border-purple-200/50 shadow-xl dark:bg-gray-800/80 dark:border-purple-700/50">
 						<CardContent className="text-center space-y-6 py-12">
-							<div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center mx-auto">
-								<Loader2 className="w-8 h-8 text-white animate-spin" />
+							<div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto">
+								<Volume2 className="w-8 h-8 text-white animate-pulse" />
 							</div>
 							<div className="space-y-2">
-								<h3 className="text-xl font-semibold text-emerald-800">Preparing Your Legal Advisor</h3>
-								<p className="text-neutral-600">
-									Setting up voice AI with your specific legal context and knowledge base...
+								<h3 className="text-xl font-semibold text-purple-800 dark:text-purple-200">Preparing Your AI Advisor</h3>
+								<p className="text-gray-600 dark:text-gray-400">
+									Setting up your personalized legal consultation session...
 								</p>
 							</div>
-							<div className="bg-emerald-50 p-4 rounded-lg">
-								<p className="text-sm text-emerald-700">
-									Your AI advisor will have comprehensive knowledge about your specific legal situation
+							<div className="bg-purple-50 dark:bg-purple-950/50 p-4 rounded-lg">
+								<p className="text-sm text-purple-700 dark:text-purple-300">
+									🤖 Training AI with your case details and relevant legal knowledge
 								</p>
 							</div>
 						</CardContent>
 					</Card>
 				)}
 
+				{/* Voice Mode */}
 				{(currentStep === 'ready' || currentStep === 'conversation') && (
 					<VoiceMode
 						isActive={currentStep === 'conversation'}
 						onStart={startConversation}
 						onEnd={endConversation}
-						sessionId={sessionId || undefined}
+						sessionId={sessionId}
 					/>
 				)}
 
+				{/* Summary */}
 				{currentStep === 'summary' && (
-					<Card className="bg-white/80 backdrop-blur-sm border border-teal-200/50 shadow-xl">
+					<Card className="bg-white/80 backdrop-blur-sm border border-teal-200/50 shadow-xl dark:bg-gray-800/80 dark:border-teal-700/50">
 						<CardHeader>
-							<CardTitle className="text-xl text-teal-800">Conversation Summary</CardTitle>
+							<CardTitle className="text-xl text-teal-800 dark:text-teal-200">Consultation Summary</CardTitle>
 							<CardDescription>
 								Here&apos;s what we discussed about your legal issue
 							</CardDescription>
 						</CardHeader>
 						<CardContent className="space-y-6">
-							<div className="bg-teal-50 p-4 rounded-lg">
-								<pre className="text-sm text-teal-800 whitespace-pre-wrap">{conversationSummary}</pre>
+							<div className="bg-teal-50 dark:bg-teal-950/50 p-4 rounded-lg">
+								<pre className="text-sm text-teal-800 dark:text-teal-200 whitespace-pre-wrap">{conversationSummary}</pre>
+							</div>
+							<div className="bg-amber-50 dark:bg-amber-950/50 p-4 rounded-lg border border-amber-200 dark:border-amber-800">
+								<div className="flex items-start space-x-3">
+									<Scale className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5" />
+									<div>
+										<h4 className="font-semibold text-amber-800 dark:text-amber-200 mb-1">
+											⚖️ Legal Disclaimer
+										</h4>
+										<p className="text-sm text-amber-700 dark:text-amber-300">
+											This is educational information and should not be considered as legal advice. 
+											Please consult with a qualified lawyer for specific legal guidance on your case.
+										</p>
+									</div>
+								</div>
 							</div>
 							<div className="flex space-x-4">
 								<Button 
 									onClick={resetSession}
-									variant="outline"
-									className="flex-1"
+									variant="outline" 
+									className="flex-1 border-teal-300 text-teal-700 hover:bg-teal-50 dark:border-teal-600 dark:text-teal-300 dark:hover:bg-teal-950"
 								>
-									Ask Another Question
+									New Consultation
 								</Button>
-								<Button 
-									className="flex-1 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white"
-									disabled
-								>
-									Connect with Lawyer (Coming Soon)
-								</Button>
+								<Link href="/consultations" className="flex-1">
+									<Button className="w-full bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white">
+										View All Consultations
+									</Button>
+								</Link>
 							</div>
 						</CardContent>
 					</Card>
 				)}
-
-				{/* Legal Disclaimer */}
-				<Card className="bg-amber-50/80 border border-amber-200/50">
-					<CardContent className="pt-6">
-						<div className="text-center space-y-2">
-							<h3 className="font-semibold text-amber-800">⚖️ Legal Disclaimer</h3>
-							<p className="text-sm text-amber-700">
-								This AI provides general legal information based on Indian laws for educational purposes only. 
-								This is not legal advice. Always consult qualified legal professionals for specific legal matters.
-							</p>
-						</div>
-					</CardContent>
-				</Card>
 			</div>
 		</div>
 	)

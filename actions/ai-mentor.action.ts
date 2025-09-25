@@ -3,6 +3,11 @@
 import { auth } from "@/auth"
 import { prisma } from "@/lib/prisma"
 import { ConsultationStatus, LawType } from "@prisma/client"
+import OpenAI from "openai"
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+})
 
 interface OpenAIResponse {
   legalIssueCategory: string
@@ -62,19 +67,13 @@ export async function analyzeLegalProblem(consultationId: string) {
       return { success: false, error: "Consultation not found" }
     }
 
-    // OpenAI API call
-    const openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "gpt-4",
-        messages: [
-          {
-            role: "system",
-            content: `You are a legal research assistant specializing in Indian law and constitution. Provide comprehensive, accurate legal information in JSON format. Always include disclaimers that this is educational information, not legal advice.
+    // OpenAI API call using SDK
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        {
+          role: "system",
+          content: `You are a legal research assistant specializing in Indian law and constitution. Provide comprehensive, accurate legal information in JSON format. Always include disclaimers that this is educational information, not legal advice.
 
 Response format:
 {
@@ -87,25 +86,20 @@ Response format:
   "precedentCases": ["Relevant case laws if applicable"],
   "regionalVariations": ["State-specific variations if any"]
 }`
-          },
-          {
-            role: "user",
-            content: `Legal Problem: ${consultation.problemDescription}
+        },
+        {
+          role: "user",
+          content: `Legal Problem: ${consultation.problemDescription}
 
 Please provide comprehensive legal information based on Indian law and constitution for this situation.`
-          }
-        ],
-        temperature: 0.3,
-        max_tokens: 2000
-      })
+        }
+      ],
+      temperature: 0.3,
+      max_tokens: 2000,
+      response_format: { type: "json_object" }
     })
 
-    if (!openaiResponse.ok) {
-      throw new Error(`OpenAI API error: ${openaiResponse.statusText}`)
-    }
-
-    const openaiData = await openaiResponse.json()
-    const legalAnalysis = JSON.parse(openaiData.choices[0].message.content)
+    const legalAnalysis = JSON.parse(completion.choices[0].message.content || "{}")
 
     // Update consultation with analysis
     await prisma.legalConsultation.update({
@@ -131,15 +125,15 @@ Please provide comprehensive legal information based on Indian law and constitut
       }
     })
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       analysis: legalAnalysis,
       message: "Legal analysis completed successfully"
     }
 
   } catch (error) {
     console.error("Error analyzing legal problem:", error)
-    
+
     // Update consultation status to failed
     await prisma.legalConsultation.update({
       where: { id: consultationId },
@@ -172,6 +166,8 @@ export async function prepareVoiceSession(consultationId: string) {
       return { success: false, error: "Legal analysis not found" }
     }
 
+    const legalAnalysis = consultation.legalAnalysis as unknown as OpenAIResponse
+
     // Prepare knowledge base for ElevenLabs
     const knowledgeBase = `
 Legal Issue: ${consultation.problemDescription}
@@ -189,15 +185,51 @@ User Rights: ${entry.userRights}
 Instructions: You are a helpful legal advisor AI. Discuss this legal issue with the user, explain their rights, and guide them through possible procedures. Always remind them that this is educational information and they should consult a qualified lawyer for specific legal advice.
 `
 
-    // For now, we'll simulate ElevenLabs integration
-    // In a real implementation, you would call ElevenLabs API here
-    const mockElevenLabsSessionId = `elevenlabs_${consultationId}_${Date.now()}`
+    // ElevenLabs Conversational AI Integration
+    let elevenlabsSessionId: string
+
+    try {
+      // Create ElevenLabs conversation session
+      const elevenlabsResponse = await fetch(`https://api.elevenlabs.io/v1/convai/conversations`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.ELEVENLABS_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          agent_id: process.env.ELEVENLABS_AGENT_ID,
+          // Pass the knowledge base as context
+          variables: {
+            legal_analysis: JSON.stringify(consultation.legalAnalysis),
+            user_problem: consultation.problemDescription,
+            applicable_laws: legalAnalysis.applicableLaws.join(', '),
+            user_rights: legalAnalysis.userRights.join(', '),
+            procedures: legalAnalysis.recommendedProcedures.join(', '),
+            deadlines: legalAnalysis.importantDeadlines.join(', '),
+            precedent_cases: legalAnalysis.precedentCases?.join(', ') || 'None specified'
+          }
+        })
+      })
+
+      if (elevenlabsResponse.ok) {
+        const elevenlabsData = await elevenlabsResponse.json()
+        elevenlabsSessionId = elevenlabsData.conversation_id
+      } else {
+        console.error("ElevenLabs API error:", await elevenlabsResponse.text())
+        // Fallback to mock session
+        elevenlabsSessionId = `mock_${consultationId}_${Date.now()}`
+      }
+    } catch (error) {
+      console.error("Error creating ElevenLabs session:", error)
+      // Fallback to mock session
+      elevenlabsSessionId = `mock_${consultationId}_${Date.now()}`
+    }
 
     // Create voice session record
     await prisma.voiceSession.create({
       data: {
         consultationId,
-        elevenlabsSessionId: mockElevenLabsSessionId,
+        elevenlabsSessionId,
         sessionStatus: "preparing"
       }
     })
@@ -206,14 +238,14 @@ Instructions: You are a helpful legal advisor AI. Discuss this legal issue with 
     await prisma.legalConsultation.update({
       where: { id: consultationId },
       data: {
-        elevenlabsSessionId: mockElevenLabsSessionId,
+        elevenlabsSessionId,
         status: ConsultationStatus.READY
       }
     })
 
     return {
       success: true,
-      sessionId: mockElevenLabsSessionId,
+      sessionId: elevenlabsSessionId,
       message: "Voice session prepared successfully"
     }
 
@@ -240,7 +272,7 @@ export async function startVoiceConversation(consultationId: string) {
     // Update voice session
     await prisma.voiceSession.updateMany({
       where: { consultationId },
-      data: { 
+      data: {
         sessionStatus: "active",
         startedAt: new Date()
       }
@@ -279,14 +311,11 @@ User: Thank you for the guidance.
 AI: You're welcome! Remember to consult with a qualified legal professional for specific advice on your case. Is there anything else you'd like to know about your legal rights?
 `
 
-    // Generate summary using OpenAI
-    const summaryResponse = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    // Generate summary using OpenAI SDK
+    let conversationSummary = "Conversation completed. Key legal points were discussed and guidance was provided."
+
+    try {
+      const summaryCompletion = await openai.chat.completions.create({
         model: "gpt-4",
         messages: [
           {
@@ -301,13 +330,11 @@ AI: You're welcome! Remember to consult with a qualified legal professional for 
         temperature: 0.3,
         max_tokens: 500
       })
-    })
 
-    let conversationSummary = "Conversation completed. Key legal points were discussed and guidance was provided."
-    
-    if (summaryResponse.ok) {
-      const summaryData = await summaryResponse.json()
-      conversationSummary = summaryData.choices[0].message.content
+      conversationSummary = summaryCompletion.choices[0].message.content || conversationSummary
+    } catch (summaryError) {
+      console.error("Error generating summary:", summaryError)
+      // Use default summary if OpenAI fails
     }
 
     // Update consultation

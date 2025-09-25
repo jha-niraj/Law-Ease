@@ -44,7 +44,18 @@ model User {
     image                String    @default("https://res.cloudinary.com/dhfuckcax/image/upload/v1739810646/krk8x7fzjukcfcoefrea.jpg")
     role                 Role      @default(USER)
     roleExplicitlyChosen Boolean   @default(false)
-	createdAt            DateTime  @default(now())
+    createdAt            DateTime  @default(now())
+    updatedAt            DateTime  @updatedAt
+
+    // Profile information for legal platform
+    bio                  String?
+    location             String?
+    phone                String?
+    
+    // Legal platform specific stats
+    totalConsultations   Int       @default(0)
+    totalDocuments       Int       @default(0)
+    membershipTier       String    @default("Basic") // Basic, Premium, Pro
 
     // Email verification
     verificationToken    String?   @unique
