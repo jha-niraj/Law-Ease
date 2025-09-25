@@ -6,9 +6,20 @@ import { Badge } from "@/components/ui/badge"
 import { Bot, MessageSquare, Scale, Users, ArrowRight, Sparkles } from "lucide-react"
 import Link from "next/link"
 import { useSession } from "next-auth/react"
+import { LawyerDashboard } from "@/components/dashboard/lawyer-dashboard"
+import { StudentDashboard } from "@/components/dashboard/student-dashboard"
 
 export default function Dashboard() {
 	const { data: session } = useSession()
+
+	// Show role-specific dashboard
+	if (session?.user?.role === "LAWYER") {
+		return <LawyerDashboard />
+	}
+
+	if (session?.user?.role === "STUDENT") {
+		return <StudentDashboard />
+	}
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-slate-50 via-teal-50/30 to-emerald-50/50 p-6">

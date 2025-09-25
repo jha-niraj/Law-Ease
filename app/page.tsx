@@ -40,7 +40,7 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-white dark:bg-neutral-950">
       <Navbar isLoggedIn={false} />
 
       {/* Hero Section */}
@@ -52,19 +52,19 @@ export default function LandingPage() {
             transition={{ duration: 0.8 }}
             className="space-y-8"
           >
-            <motion.div 
+            <motion.div
               className="space-y-6"
               variants={staggerContainer}
               initial="initial"
               animate="animate"
             >
-              <motion.h1 
+              <motion.h1
                 variants={fadeInUp}
                 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-foreground leading-tight text-balance"
               >
                 Law Ease – Law Made Simple, Justice Made Accessible
               </motion.h1>
-              <motion.p 
+              <motion.p
                 variants={fadeInUp}
                 className="text-xl md:text-2xl text-muted-foreground text-pretty max-w-3xl mx-auto"
               >
@@ -73,12 +73,12 @@ export default function LandingPage() {
               </motion.p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               className="flex flex-col sm:flex-row gap-4 justify-center"
             >
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 px-8 py-3"
                 onClick={() => window.location.href = '/signup'}
               >
@@ -94,7 +94,7 @@ export default function LandingPage() {
             </motion.div>
 
             {/* Feature Icons */}
-            <motion.div 
+            <motion.div
               variants={fadeInUp}
               className="flex items-center justify-center space-x-8 mt-12 pt-8 border-t border-slate-200 dark:border-slate-700"
             >
@@ -118,7 +118,7 @@ export default function LandingPage() {
       {/* Problem Statement Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white/50 dark:bg-slate-800/50">
         <div className="max-w-7xl mx-auto">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -134,7 +134,7 @@ export default function LandingPage() {
             </p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             className="grid md:grid-cols-3 gap-8"
             variants={staggerContainer}
             initial="initial"
@@ -191,7 +191,7 @@ export default function LandingPage() {
       {/* Vision & Mission Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <motion.div 
+          <motion.div
             className="grid lg:grid-cols-2 gap-12 items-center"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -206,7 +206,7 @@ export default function LandingPage() {
             >
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-6">Our Vision & Mission</h2>
               <div className="space-y-6">
-                <motion.div 
+                <motion.div
                   className="border-l-4 border-blue-500 dark:border-blue-400 pl-6"
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -219,7 +219,7 @@ export default function LandingPage() {
                     economic status.
                   </p>
                 </motion.div>
-                <motion.div 
+                <motion.div
                   className="border-l-4 border-indigo-500 dark:border-indigo-400 pl-6"
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -235,14 +235,14 @@ export default function LandingPage() {
               </div>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-2xl p-8 border border-blue-200 dark:border-blue-800"
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
             >
-              <motion.div 
+              <motion.div
                 className="grid grid-cols-2 gap-6"
                 variants={staggerContainer}
                 initial="initial"
@@ -555,7 +555,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-100 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <motion.div 
+          <motion.div
             className="grid md:grid-cols-4 gap-8"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}

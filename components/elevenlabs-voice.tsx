@@ -74,12 +74,12 @@ export function ElevenLabsVoice({
       // Send initial context message to the agent
       if (legalAnalysis && userProblem) {
         const contextMessage = `Legal Analysis Context:
-Problem: ${userProblem}
-Applicable Laws: ${legalAnalysis.applicableLaws?.join(', ') || 'None specified'}
-User Rights: ${legalAnalysis.userRights?.join(', ') || 'None specified'}
-Recommended Procedures: ${legalAnalysis.recommendedProcedures?.join(', ') || 'None specified'}
-Important Deadlines: ${legalAnalysis.importantDeadlines?.join(', ') || 'None specified'}
-Precedent Cases: ${legalAnalysis.precedentCases?.join(', ') || 'None specified'}`
+        Problem: ${userProblem}
+        Applicable Laws: ${legalAnalysis.applicableLaws?.join(', ') || 'None specified'}
+        User Rights: ${legalAnalysis.userRights?.join(', ') || 'None specified'}
+        Recommended Procedures: ${legalAnalysis.recommendedProcedures?.join(', ') || 'None specified'}
+        Important Deadlines: ${legalAnalysis.importantDeadlines?.join(', ') || 'None specified'}
+        Precedent Cases: ${legalAnalysis.precedentCases?.join(', ') || 'None specified'}`
         
         conversation.sendContextualUpdate(contextMessage)
       }

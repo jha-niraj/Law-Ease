@@ -1,5 +1,40 @@
 import { getProfile, getUserStats } from "@/actions/profile.action"
+import { getLawyerProfile } from "@/actions/lawyer.action"
 import { MainProfile } from "./_components/mainprofile"
+import { LawyerProfile } from "./_components/lawyer-profile"
+
+interface LawyerProfileData {
+	id: string
+	barRegistrationNumber?: string
+	experience?: number
+	specializations: string[]
+	practiceAreas?: string
+	education?: string
+	certifications?: string
+	languages: string[]
+	hourlyRate: number
+	isVerified: boolean
+	isAvailableForBooking: boolean
+	totalBookings: number
+	completedBookings: number
+	averageRating?: number
+	totalEarnings: number
+	availabilities: Array<{
+		dayOfWeek: number
+		startTime: string
+		endTime: string
+		isAvailable: boolean
+	}>
+	reviews: Array<{
+		rating: number
+		comment?: string
+		booking: {
+			client: {
+				name: string
+			}
+		}
+	}>
+}
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 
@@ -10,9 +45,11 @@ export default async function ProfilePage() {
 		redirect('/signin')
 	}
 
-	const [profileData, statsData] = await Promise.all([
+	// Get different data based on user role
+	const [profileData, statsData, lawyerData] = await Promise.all([
 		getProfile(),
-		getUserStats()
+		getUserStats(),
+		session.user.role === 'LAWYER' ? getLawyerProfile() : Promise.resolve({ success: false })
 	])
 
 	if (!profileData.success || !profileData.user) {
@@ -40,6 +77,11 @@ export default async function ProfilePage() {
 		totalConsultations: 0,
 		totalDocuments: 0,
 		membershipTier: "Basic"
+	}
+
+	// Show role-specific profile
+	if (session.user.role === 'LAWYER' && lawyerData.success && 'profile' in lawyerData) {
+		return <LawyerProfile user={user} stats={profileStats} lawyerProfile={lawyerData.profile as LawyerProfileData} />
 	}
 
 	return <MainProfile user={user} stats={profileStats} />

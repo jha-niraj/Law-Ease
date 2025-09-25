@@ -2,14 +2,14 @@
 
 import type React from "react"
 
-import { Suspense, useState } from "react"
+import { Suspense, useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ArrowRight } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { ArrowRight, Scale, GraduationCap } from "lucide-react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 import { registerUser } from "@/actions/auth.action"
 
@@ -18,15 +18,25 @@ function SignUp() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false)
-    // const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+    const [userType, setUserType] = useState<"USER" | "LAWYER" | "STUDENT">("USER")
     const router = useRouter()
+    const searchParams = useSearchParams()
+
+    useEffect(() => {
+        const ref = searchParams.get('ref')
+        if (ref === 'lawyer') {
+            setUserType('LAWYER')
+        } else if (ref === 'student') {
+            setUserType('STUDENT')
+        }
+    }, [searchParams])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
 
         try {
-            const result = await registerUser(name, email, password)
+            const result = await registerUser(name, email, password, userType)
 
             if (!result.success) {
                 throw new Error(result.error || 'Registration failed')
@@ -35,7 +45,12 @@ function SignUp() {
             console.log("Signup Result: " + result?.message);
 
             toast.success('Account created successfully! Please check your email for verification code.')
-            router.push(`/verify?email=${encodeURIComponent(email)}`)
+            
+            if (userType === 'LAWYER') {
+                router.push(`/lawyer-onboarding?email=${encodeURIComponent(email)}`)
+            } else {
+                router.push(`/verify?email=${encodeURIComponent(email)}`)
+            }
         } catch (error) {
             console.error('Registration error:', error)
             toast.error(error instanceof Error ? error.message : 'Registration failed')
@@ -93,7 +108,23 @@ function SignUp() {
                     <div className="bg-white/80 dark:bg-black/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-neutral-200/20 dark:border-neutral-800/20 p-8">
                         <div className="text-center mb-8">
                             <h2 className="text-2xl font-bold text-neutral-900 dark:text-white">Create your account</h2>
-                            <p className="text-neutral-600 dark:text-neutral-400 mt-2">Join the future of idea validation</p>
+                            <p className="text-neutral-600 dark:text-neutral-400 mt-2">
+                                {userType === 'LAWYER' ? 'Join as a Legal Professional' : 
+                                 userType === 'STUDENT' ? 'Start Your Legal Learning Journey' : 
+                                 'Join LawEase Platform'}
+                            </p>
+                            {userType !== 'USER' && (
+                                <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-950/50 rounded-full border border-blue-200 dark:border-blue-800">
+                                    {userType === 'LAWYER' ? (
+                                        <Scale className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                                    ) : (
+                                        <GraduationCap className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                                    )}
+                                    <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+                                        {userType === 'LAWYER' ? 'Legal Professional' : 'Student'}
+                                    </span>
+                                </div>
+                            )}
                         </div>
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="space-y-2">

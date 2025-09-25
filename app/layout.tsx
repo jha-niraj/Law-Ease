@@ -21,7 +21,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-	title: "Nyay Mitra",
+	title: "Law Ease",
 	description: "An platform where you can learn about the law or you can clear your confusion about the law and several things related to the consitutions.",
 };
 

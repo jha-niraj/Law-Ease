@@ -10,8 +10,32 @@ datasource db {
 enum Role {
     USER
     STUDENT
-    LAWLITIGATORS
+    LAWYER
     ADMIN
+}
+
+enum BookingStatus {
+    PENDING
+    CONFIRMED
+    REJECTED
+    COMPLETED
+    CANCELLED
+}
+
+enum LawyerSpecialization {
+    CONSTITUTIONAL
+    CIVIL
+    CRIMINAL
+    FAMILY
+    PROPERTY
+    LABOR
+    TAXATION
+    CORPORATE
+    CONSUMER
+    IMMIGRATION
+    INTELLECTUAL_PROPERTY
+    ENVIRONMENTAL
+    OTHER
 }
 
 enum ConsultationStatus {
@@ -67,8 +91,14 @@ model User {
 
     accounts              Account[]
     legalConsultations    LegalConsultation[]
+    
+    // Lawyer-specific relations
+    lawyerProfile         LawyerProfile?
+    lawyerBookings        LawyerBooking[] @relation("LawyerBookings")
+    clientBookings        LawyerBooking[] @relation("ClientBookings")
 
     @@index([email])
+    @@index([role])
 }
 
 model Account {
@@ -145,4 +175,132 @@ model VoiceSession {
 
     @@index([consultationId])
     @@index([elevenlabsSessionId])
+}
+
+// Lawyer Profile Model
+model LawyerProfile {
+    id                    String                    @id @default(cuid())
+    userId                String                    @unique
+    
+    // Professional Information
+    barRegistrationNumber String?                   @unique
+    experience            Int?                      // years of experience
+    specializations       LawyerSpecialization[]
+    practiceAreas         String?                   @db.Text
+    education             String?                   @db.Text
+    certifications        String?                   @db.Text
+    languages             String[]                  @default([])
+    
+    // Verification Status
+    isVerified            Boolean                   @default(false)
+    verificationDocuments Json?                     // Store document URLs/info
+    verificationNotes     String?                   @db.Text
+    
+    // Pricing and Availability
+    hourlyRate            Decimal                   @db.Decimal(10, 2)
+    platformFeePercentage Decimal                   @default(15.00) @db.Decimal(5, 2)
+    currency              String                    @default("INR")
+    
+    // Profile Settings
+    isAvailableForBooking Boolean                   @default(false)
+    profileCompleteness   Int                       @default(0) // percentage
+    
+    // Stats
+    totalBookings         Int                       @default(0)
+    completedBookings     Int                       @default(0)
+    averageRating         Decimal?                  @db.Decimal(3, 2)
+    totalEarnings         Decimal                   @default(0.00) @db.Decimal(12, 2)
+    
+    createdAt             DateTime                  @default(now())
+    updatedAt             DateTime                  @updatedAt
+    
+    user                  User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    availabilities        LawyerAvailability[]
+    bookings              LawyerBooking[]
+    reviews               LawyerReview[]
+
+    @@index([userId])
+    @@index([isVerified])
+    @@index([isAvailableForBooking])
+}
+
+// Lawyer Availability Model
+model LawyerAvailability {
+    id              String          @id @default(cuid())
+    lawyerProfileId String
+    
+    dayOfWeek       Int             // 0 = Sunday, 1 = Monday, etc.
+    startTime       String          // Format: "HH:mm"
+    endTime         String          // Format: "HH:mm"
+    isAvailable     Boolean         @default(true)
+    
+    createdAt       DateTime        @default(now())
+    updatedAt       DateTime        @updatedAt
+    
+    lawyerProfile   LawyerProfile   @relation(fields: [lawyerProfileId], references: [id], onDelete: Cascade)
+
+    @@index([lawyerProfileId])
+    @@index([dayOfWeek])
+}
+
+// Lawyer Booking Model
+model LawyerBooking {
+    id              String          @id @default(cuid())
+    lawyerId        String
+    clientId        String
+    
+    // Booking Details
+    scheduledDate   DateTime
+    scheduledTime   String          // Format: "HH:mm"
+    duration        Int             @default(60) // minutes
+    meetingLink     String?         // Video call link
+    
+    // Pricing
+    hourlyRate      Decimal         @db.Decimal(10, 2)
+    platformFee     Decimal         @db.Decimal(10, 2)
+    totalAmount     Decimal         @db.Decimal(10, 2)
+    
+    // Status and Communication
+    status          BookingStatus   @default(PENDING)
+    clientMessage   String?         @db.Text
+    lawyerNotes     String?         @db.Text
+    
+    // Timestamps
+    bookedAt        DateTime        @default(now())
+    confirmedAt     DateTime?
+    completedAt     DateTime?
+    cancelledAt     DateTime?
+    
+    createdAt       DateTime        @default(now())
+    updatedAt       DateTime        @updatedAt
+    
+    lawyer          User            @relation("LawyerBookings", fields: [lawyerId], references: [id], onDelete: Cascade)
+    client          User            @relation("ClientBookings", fields: [clientId], references: [id], onDelete: Cascade)
+    lawyerProfile   LawyerProfile   @relation(fields: [lawyerId], references: [userId], onDelete: Cascade, map: "LawyerBooking_lawyerProfile_fkey")
+    review          LawyerReview?
+
+    @@index([lawyerId])
+    @@index([clientId])
+    @@index([scheduledDate])
+    @@index([status])
+}
+
+// Lawyer Review Model
+model LawyerReview {
+    id          String          @id @default(cuid())
+    bookingId   String          @unique
+    lawyerId    String
+    clientId    String
+    
+    rating      Int             // 1-5 stars
+    comment     String?         @db.Text
+    
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+    
+    booking     LawyerBooking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+    lawyer      LawyerProfile   @relation(fields: [lawyerId], references: [userId], onDelete: Cascade)
+
+    @@index([lawyerId])
+    @@index([rating])
 }

@@ -69,7 +69,7 @@ async function sendRegistrationSuccessEmail(email: string, name: string) {
 }
 
 // Register user action
-export async function registerUser(name: string, email: string, password: string) {
+export async function registerUser(name: string, email: string, password: string, role: "USER" | "LAWYER" | "STUDENT" = "USER") {
     if (!name || !email || !password) {
         return { success: false, error: "All fields are required" }
     }
@@ -97,6 +97,7 @@ export async function registerUser(name: string, email: string, password: string
                 name,
                 email,
                 password: hashedPassword,
+                role,
                 verificationToken: otp,
                 verificationTokenExpiry: otpExpiry,
             }

@@ -2,8 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Globe, Menu, X, Scale } from "lucide-react"
+import { Menu, X, Scale } from "lucide-react"
 import { useRouter } from "next/navigation" // Import useRouter for navigation
 import { ThemeSwitcher } from "@/components/theme-switcher"
 import Link from "next/link"
@@ -44,7 +43,7 @@ export function Navbar({ isLoggedIn = false, userType = null }: NavbarProps) {
                 <div className="flex justify-between items-center h-16">
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-                        <Scale className="h-8 w-8 text-teal-600" />
+                        <Scale className="h-8 w-8 text-blue-600 dark:text-blue-400" />
                         <span className="font-serif font-bold text-xl text-foreground">LawEase</span>
                     </Link>
 
@@ -91,31 +90,32 @@ export function Navbar({ isLoggedIn = false, userType = null }: NavbarProps) {
                     {/* Theme Switcher, Language Switcher & Auth Buttons */}
                     <div className="flex items-center space-x-4">
                         <ThemeSwitcher />
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm" className="text-foreground hover:text-teal-600">
-                                    <Globe className="h-4 w-4 mr-2" />
-                                    EN
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <DropdownMenuItem>English</DropdownMenuItem>
-                                <DropdownMenuItem>हिंदी (Hindi)</DropdownMenuItem>
-                                <DropdownMenuItem>More languages...</DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
 
                         {!isLoggedIn ? (
                             <div className="hidden md:flex space-x-2">
                                 <Button
+                                    variant="outline"
+                                    className="border-blue-300 text-blue-700 hover:bg-blue-50 dark:border-blue-600 dark:text-blue-300 dark:hover:bg-blue-950/50"
+                                    onClick={() => router.push("/signup?ref=student")}
+                                >
+                                    Study
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    className="border-indigo-300 text-indigo-700 hover:bg-indigo-50 dark:border-indigo-600 dark:text-indigo-300 dark:hover:bg-indigo-950/50"
+                                    onClick={() => router.push("/signup?ref=lawyer")}
+                                >
+                                    Join as Lawyer
+                                </Button>
+                                <Button
                                     variant="ghost"
-                                    className="text-foreground hover:text-teal-600"
+                                    className="text-foreground hover:text-blue-600 dark:hover:text-blue-400"
                                     onClick={() => router.push("/signin")}
                                 >
                                     Sign In
                                 </Button>
                                 <Button
-                                    className="bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white"
+                                    className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white"
                                     onClick={() => router.push("/signup")}
                                 >
                                     Sign Up
@@ -187,17 +187,31 @@ export function Navbar({ isLoggedIn = false, userType = null }: NavbarProps) {
                             </button>
 
                             {!isLoggedIn && (
-                                <div className="flex space-x-2 pt-4">
-                                    <Button variant="ghost" className="flex-1" onClick={() => router.push("/login")}>
-                                        {" "}
-                                        {/* Add onClick for Login */}
-                                        Login
-                                    </Button>
-                                    <Button className="flex-1" onClick={() => router.push("/signup")}>
-                                        {" "}
-                                        {/* Add onClick for Sign Up */}
-                                        Sign Up
-                                    </Button>
+                                <div className="flex flex-col space-y-3 pt-4">
+                                    <div className="flex space-x-2">
+                                        <Button 
+                                            variant="outline" 
+                                            className="flex-1 border-blue-300 text-blue-700 hover:bg-blue-50" 
+                                            onClick={() => router.push("/signup?ref=student")}
+                                        >
+                                            Study
+                                        </Button>
+                                        <Button 
+                                            variant="outline" 
+                                            className="flex-1 border-indigo-300 text-indigo-700 hover:bg-indigo-50" 
+                                            onClick={() => router.push("/signup?ref=lawyer")}
+                                        >
+                                            Join as Lawyer
+                                        </Button>
+                                    </div>
+                                    <div className="flex space-x-2">
+                                        <Button variant="ghost" className="flex-1" onClick={() => router.push("/signin")}>
+                                            Sign In
+                                        </Button>
+                                        <Button className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600" onClick={() => router.push("/signup")}>
+                                            Sign Up
+                                        </Button>
+                                    </div>
                                 </div>
                             )}
                         </div>

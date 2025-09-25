@@ -9,7 +9,7 @@ declare module "next-auth" {
             email: string
             name: string
             image?: string | null
-            role: "USER" | "STUDENT" | "LAWLITIGATORS" | "ADMIN"
+            role: "USER" | "STUDENT" | "LAWYER" | "ADMIN"
             userRole?: UserRole | null
             bio?: string | null
             emailVerified?: Date | null
@@ -22,7 +22,7 @@ declare module "next-auth" {
         email: string
         name: string
         image?: string | null
-        role: "USER" | "STUDENT" | "LAWLITIGATORS" | "ADMIN"
+        role: "USER" | "STUDENT" | "LAWYER" | "ADMIN"
         userRole?: UserRole | null
         bio?: string | null,
         emailVerified?: Date | null
@@ -37,7 +37,7 @@ declare module "next-auth/jwt" {
         email: string
         name: string
         image?: string | null
-        role: "USER" | "STUDENT" | "LAWLITIGATORS" | "ADMIN"
+        role: "USER" | "STUDENT" | "LAWYER" | "ADMIN"
         userRole?: UserRole | null
         roleExplicitlyChosen: boolean
         bio?: string | null,
