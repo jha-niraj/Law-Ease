@@ -21,8 +21,8 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-	title: "Next Starter Kit",
-	description: "All medicine info at one place",
+	title: "Nyay Mitra",
+	description: "An platform where you can learn about the law or you can clear your confusion about the law and several things related to the consitutions.",
 };
 
 export default function RootLayout({

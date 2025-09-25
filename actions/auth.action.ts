@@ -22,9 +22,9 @@ function generateResetToken(): string {
 async function sendVerificationEmail(email: string, otp: string) {
     try {
         await resend.emails.send({
-            from: "ValidateX <noreply@coderz.nirajjha.xyz>",
+            from: "NyayMitra <noreply@coderz.nirajjha.xyz>",
             to: email,
-            subject: "Verify your email address - ValidateX",
+            subject: "Verify your email address - NyayMitra",
             html: verificationEmailTemplate(otp)
         })
         return { success: true }
@@ -40,9 +40,9 @@ async function sendPasswordResetEmail(email: string, resetToken: string) {
     
     try {
         await resend.emails.send({
-            from: "ValidateX <noreply@coderz.nirajjha.xyz>",
+            from: "NyayMitra <noreply@coderz.nirajjha.xyz>",
             to: email,
-            subject: "Reset your password - ValidateX",
+            subject: "Reset your password - NyayMitra",
             html: passwordResetEmailTemplate(resetUrl)
         })
         return { success: true }
@@ -56,9 +56,9 @@ async function sendPasswordResetEmail(email: string, resetToken: string) {
 async function sendRegistrationSuccessEmail(email: string, name: string) {
     try {
         await resend.emails.send({
-            from: "ValidateX <noreply@coderz.nirajjha.xyz>",
+            from: "NyayMitra <noreply@coderz.nirajjha.xyz>",
             to: email,
-            subject: "Welcome to ValidateX - Registration Complete! 🎉",
+            subject: "Welcome to NyayMitra - Registration Complete! 🎉",
             html: registrationSuccessEmailTemplate(name, email)
         })
         return { success: true }

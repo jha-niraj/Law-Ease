@@ -111,7 +111,7 @@ export default function OnboardingPage() {
             })
 
             if (result.success) {
-                toast.success("Welcome to ValidateX!")
+                toast.success("Welcome to NyayMitra!")
                 // Redirect based on role
                 await redirectAfterOnboarding(formData.userRole)
             } else {
@@ -130,7 +130,7 @@ export default function OnboardingPage() {
             <CardHeader className="text-center">
                 <CardTitle className="text-2xl font-bold">Choose Your Role</CardTitle>
                 <CardDescription>
-                    How would you like to participate in ValidateX?
+                    How would you like to participate in NyayMitra?
                 </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
@@ -202,7 +202,7 @@ export default function OnboardingPage() {
                             <div className="flex-1">
                                 <h3 className="text-lg font-semibold mb-2">Both Submit & Validate</h3>
                                 <p className="text-gray-600 dark:text-gray-400">
-                                    Get the full ValidateX experience - submit your ideas and help validate others
+                                    Get the full NyayMitra experience - submit your ideas and help validate others
                                 </p>
                                 <div className="flex items-center gap-2 mt-3">
                                     <Badge variant="outline">Complete Experience</Badge>
@@ -316,7 +316,7 @@ export default function OnboardingPage() {
     const renderStep3 = () => (
         <Card className="w-full max-w-7xl mx-auto">
             <CardHeader className="text-center">
-                <CardTitle className="text-2xl font-bold">How ValidateX Works</CardTitle>
+                <CardTitle className="text-2xl font-bold">How NyayMitra Works</CardTitle>
                 <CardDescription>
                     Watch this quick 1-minute video to understand the platform
                 </CardDescription>
@@ -327,7 +327,7 @@ export default function OnboardingPage() {
                         <div className="p-4 bg-white/10 rounded-full mb-4 mx-auto w-fit">
                             <Play className="h-8 w-8 text-white" />
                         </div>
-                        <p className="text-white mb-4">Video: How ValidateX Works</p>
+                        <p className="text-white mb-4">Video: How NyayMitra Works</p>
                         <p className="text-white/70 text-sm">Click to watch the introduction video</p>
                     </div>
                 </div>

@@ -108,14 +108,14 @@ function SignInContent() {
 				<div className="w-full max-w-md relative z-10">
 					<div className="text-center mb-4">
 						<h1 className="text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300">
-							ValidateX
+							NyayMitra
 						</h1>
 						<div className="w-12 h-0.5 bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 mx-auto"></div>
 					</div>
 					<div className="bg-white/80 dark:bg-black/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-neutral-200/20 dark:border-neutral-800/20 p-8">
 						<div className="text-center mb-4">
 							<h2 className="text-2xl font-bold text-neutral-900 dark:text-white">Welcome back</h2>
-							<p className="text-neutral-600 dark:text-neutral-400 mt-2">Sign in to your ValidateX account</p>
+							<p className="text-neutral-600 dark:text-neutral-400 mt-2">Sign in to your NyayMitra account</p>
 						</div>
 						<form onSubmit={handleSubmit} className="space-y-6">
 							<div className="space-y-2">

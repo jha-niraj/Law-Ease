@@ -109,7 +109,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar }: SidebarProps) => {
 							>
 								<div className="whitespace-nowrap">
 									<h1 className="text-xl font-bold text-gray-900 dark:text-white">
-										ValidateX
+										NyayMitra
 									</h1>
 								</div>
 							</motion.div>
