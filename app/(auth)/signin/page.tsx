@@ -16,7 +16,7 @@ function SignInContent() {
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
 	const [isLoading, setIsLoading] = useState(false)
-	const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+	// const [isGoogleLoading, setIsGoogleLoading] = useState(false)
 	const router = useRouter()
 	const searchParams = useSearchParams()
 	const callbackUrl = searchParams.get('callbackUrl') || '/dashboard'
@@ -62,18 +62,18 @@ function SignInContent() {
 		}
 	}
 
-	const handleGoogleSignIn = async () => {
-		setIsGoogleLoading(true)
-		try {
-			await signIn('google', {
-				callbackUrl
-			})
-		} catch (error) {
-			console.error('Google sign-in error:', error)
-			toast.error('Google sign-in failed')
-			setIsGoogleLoading(false)
-		}
-	}
+	// const handleGoogleSignIn = async () => {
+	// 	setIsGoogleLoading(true)
+	// 	try {
+	// 		await signIn('google', {
+	// 			callbackUrl
+	// 		})
+	// 	} catch (error) {
+	// 		console.error('Google sign-in error:', error)
+	// 		toast.error('Google sign-in failed')
+	// 		setIsGoogleLoading(false)
+	// 	}
+	// }
 
 	return (
 		<div className="min-h-screen py-16 w-full bg-white dark:bg-neutral-950 flex flex-col relative overflow-hidden">
@@ -162,7 +162,7 @@ function SignInContent() {
 								</Link>
 							</p>
 						</div>
-						<div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-700">
+						{/* <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-700">
 							<p className="text-xs text-center text-neutral-500 dark:text-neutral-400 mb-4">Or continue with</p>
 							<Button
 								type="button"
@@ -191,7 +191,7 @@ function SignInContent() {
 								</svg>
 								{isGoogleLoading ? "Signing in..." : "Continue with Google"}
 							</Button>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>

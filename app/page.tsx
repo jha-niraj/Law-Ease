@@ -3,6 +3,7 @@
 import { Navbar } from "@/components/navbar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { motion } from "framer-motion"
 import {
   Scale,
   Users,
@@ -24,70 +25,106 @@ import {
 } from "lucide-react"
 
 export default function LandingPage() {
+  const fadeInUp = {
+    initial: { opacity: 0, y: 60 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6 }
+  }
+
+  const staggerContainer = {
+    animate: {
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <Navbar isLoggedIn={false} />
 
       {/* Hero Section */}
       <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left side - Text content */}
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <h1 className="text-4xl md:text-6xl font-serif font-bold text-foreground leading-tight animate-fade-in-up text-balance">
-                  Law Ease – Law Made Simple, Justice Made Accessible
-                </h1>
-                <p className="text-xl text-muted-foreground animate-slide-in-left animate-delay-200 text-pretty">
-                  Empowering citizens, students, and legal practitioners with accessible legal information, multilingual
-                  support, and innovative tools for justice.
-                </p>
-              </div>
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-8"
+          >
+            <motion.div 
+              className="space-y-6"
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+            >
+              <motion.h1 
+                variants={fadeInUp}
+                className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-foreground leading-tight text-balance"
+              >
+                Law Ease – Law Made Simple, Justice Made Accessible
+              </motion.h1>
+              <motion.p 
+                variants={fadeInUp}
+                className="text-xl md:text-2xl text-muted-foreground text-pretty max-w-3xl mx-auto"
+              >
+                Empowering citizens, students, and legal practitioners with accessible legal information, multilingual
+                support, and innovative tools for justice.
+              </motion.p>
+            </motion.div>
 
-              <div className="flex flex-col sm:flex-row gap-4 animate-slide-in-left animate-delay-400">
-                <Button 
-                  size="lg" 
-                  className="bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-                  onClick={() => window.location.href = '/signup'}
-                >
-                  Get Started
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-teal-300 text-teal-700 hover:bg-teal-50 dark:border-teal-600 dark:text-teal-300 dark:hover:bg-teal-950 font-semibold transition-all duration-300"
-                >
-                  Learn More
-                </Button>
-              </div>
-            </div>
+            <motion.div 
+              variants={fadeInUp}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 px-8 py-3"
+                onClick={() => window.location.href = '/signup'}
+              >
+                Get Started
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-blue-300 text-blue-700 hover:bg-blue-50 dark:border-blue-600 dark:text-blue-300 dark:hover:bg-blue-950/50 font-semibold transition-all duration-300 px-8 py-3"
+              >
+                Learn More
+              </Button>
+            </motion.div>
 
-            {/* Right side - Illustration */}
-            <div className="relative animate-fade-in-up animate-delay-600">
-              <div className="bg-gradient-to-br from-teal-100 to-emerald-100 dark:from-teal-900/30 dark:to-emerald-900/30 rounded-2xl p-8 border border-teal-200 dark:border-teal-700">
-                <div className="flex items-center justify-center h-80">
-                  <div className="text-center space-y-6">
-                    <Scale className="h-24 w-24 text-teal-600 mx-auto" />
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-center space-x-4">
-                        <Users className="h-8 w-8 text-emerald-600" />
-                        <BookOpen className="h-8 w-8 text-emerald-600" />
-                        <Gavel className="h-8 w-8 text-emerald-600" />
-                      </div>
-                      <p className="text-sm text-teal-700 dark:text-teal-300 font-medium">Digital Justice Platform</p>
-                    </div>
-                  </div>
-                </div>
+            {/* Feature Icons */}
+            <motion.div 
+              variants={fadeInUp}
+              className="flex items-center justify-center space-x-8 mt-12 pt-8 border-t border-slate-200 dark:border-slate-700"
+            >
+              <div className="flex items-center space-x-2 text-slate-600 dark:text-slate-400">
+                <Scale className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                <span className="text-sm font-medium">Legal AI</span>
               </div>
-            </div>
-          </div>
+              <div className="flex items-center space-x-2 text-slate-600 dark:text-slate-400">
+                <Users className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                <span className="text-sm font-medium">Expert Network</span>
+              </div>
+              <div className="flex items-center space-x-2 text-slate-600 dark:text-slate-400">
+                <BookOpen className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                <span className="text-sm font-medium">Legal Library</span>
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Problem Statement Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white/50 dark:bg-slate-800/50">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">
               The Legal Access Challenge
             </h2>
@@ -95,99 +132,146 @@ export default function LandingPage() {
               Millions struggle to understand their legal rights due to complex language, limited access, and language
               barriers.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="mx-auto bg-accent/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                  <FileText className="h-8 w-8 text-accent" />
-                </div>
-                <CardTitle className="text-2xl font-bold text-accent">78%</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">of citizens find legal documents too complex to understand</p>
-              </CardContent>
-            </Card>
+          <motion.div 
+            className="grid md:grid-cols-3 gap-8"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+          >
+            <motion.div variants={fadeInUp}>
+              <Card className="text-center hover:shadow-lg transition-all hover:-translate-y-1 border-blue-200 dark:border-blue-800">
+                <CardHeader>
+                  <div className="mx-auto bg-blue-100 dark:bg-blue-900/50 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                    <FileText className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <CardTitle className="text-2xl font-bold text-blue-600 dark:text-blue-400">78%</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">of citizens find legal documents too complex to understand</p>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="mx-auto bg-accent/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                  <Globe className="h-8 w-8 text-accent" />
-                </div>
-                <CardTitle className="text-2xl font-bold text-accent">500M+</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  people lack access to legal information in their native language
-                </p>
-              </CardContent>
-            </Card>
+            <motion.div variants={fadeInUp}>
+              <Card className="text-center hover:shadow-lg transition-all hover:-translate-y-1 border-indigo-200 dark:border-indigo-800">
+                <CardHeader>
+                  <div className="mx-auto bg-indigo-100 dark:bg-indigo-900/50 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                    <Globe className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+                  </div>
+                  <CardTitle className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">500M+</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    people lack access to legal information in their native language
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
 
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <div className="mx-auto bg-accent/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                  <TrendingUp className="h-8 w-8 text-accent" />
-                </div>
-                <CardTitle className="text-2xl font-bold text-accent">65%</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">increase in legal queries during digital transformation</p>
-              </CardContent>
-            </Card>
-          </div>
+            <motion.div variants={fadeInUp}>
+              <Card className="text-center hover:shadow-lg transition-all hover:-translate-y-1 border-purple-200 dark:border-purple-800">
+                <CardHeader>
+                  <div className="mx-auto bg-purple-100 dark:bg-purple-900/50 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                    <TrendingUp className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <CardTitle className="text-2xl font-bold text-purple-600 dark:text-purple-400">65%</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">increase in legal queries during digital transformation</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Vision & Mission Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
+          <motion.div 
+            className="grid lg:grid-cols-2 gap-12 items-center"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-6">Our Vision & Mission</h2>
               <div className="space-y-6">
-                <div className="border-l-4 border-accent pl-6">
+                <motion.div 
+                  className="border-l-4 border-blue-500 dark:border-blue-400 pl-6"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  viewport={{ once: true }}
+                >
                   <h3 className="text-xl font-semibold text-foreground mb-2">Vision</h3>
                   <p className="text-muted-foreground">
                     A world where legal knowledge is accessible to everyone, regardless of language, education, or
                     economic status.
                   </p>
-                </div>
-                <div className="border-l-4 border-secondary pl-6">
+                </motion.div>
+                <motion.div 
+                  className="border-l-4 border-indigo-500 dark:border-indigo-400 pl-6"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                  viewport={{ once: true }}
+                >
                   <h3 className="text-xl font-semibold text-foreground mb-2">Mission</h3>
                   <p className="text-muted-foreground">
                     To democratize legal information through technology, making justice accessible, understandable, and
                     actionable for all.
                   </p>
-                </div>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="bg-gradient-to-br from-accent/10 to-secondary/10 rounded-2xl p-8">
-              <div className="grid grid-cols-2 gap-6">
-                <div className="text-center">
-                  <Heart className="h-12 w-12 text-accent mx-auto mb-3" />
+            <motion.div 
+              className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-2xl p-8 border border-blue-200 dark:border-blue-800"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <motion.div 
+                className="grid grid-cols-2 gap-6"
+                variants={staggerContainer}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true }}
+              >
+                <motion.div variants={fadeInUp} className="text-center">
+                  <Heart className="h-12 w-12 text-blue-600 dark:text-blue-400 mx-auto mb-3" />
                   <h4 className="font-semibold text-foreground">Empathy</h4>
                   <p className="text-sm text-muted-foreground">Understanding user needs</p>
-                </div>
-                <div className="text-center">
-                  <Shield className="h-12 w-12 text-accent mx-auto mb-3" />
+                </motion.div>
+                <motion.div variants={fadeInUp} className="text-center">
+                  <Shield className="h-12 w-12 text-indigo-600 dark:text-indigo-400 mx-auto mb-3" />
                   <h4 className="font-semibold text-foreground">Trust</h4>
                   <p className="text-sm text-muted-foreground">Reliable legal information</p>
-                </div>
-                <div className="text-center">
-                  <Globe className="h-12 w-12 text-accent mx-auto mb-3" />
+                </motion.div>
+                <motion.div variants={fadeInUp} className="text-center">
+                  <Globe className="h-12 w-12 text-purple-600 dark:text-purple-400 mx-auto mb-3" />
                   <h4 className="font-semibold text-foreground">Accessibility</h4>
                   <p className="text-sm text-muted-foreground">Available to everyone</p>
-                </div>
-                <div className="text-center">
-                  <BookOpen className="h-12 w-12 text-accent mx-auto mb-3" />
+                </motion.div>
+                <motion.div variants={fadeInUp} className="text-center">
+                  <BookOpen className="h-12 w-12 text-pink-600 dark:text-pink-400 mx-auto mb-3" />
                   <h4 className="font-semibold text-foreground">Education</h4>
                   <p className="text-sm text-muted-foreground">Learning-focused approach</p>
-                </div>
-              </div>
-            </div>
-          </div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
@@ -469,53 +553,59 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-secondary text-secondary-foreground py-12 px-4 sm:px-6 lg:px-8">
+      <footer className="bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-100 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
+          <motion.div 
+            className="grid md:grid-cols-4 gap-8"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
             {/* Logo and Description */}
             <div className="md:col-span-2">
               <div className="flex items-center space-x-2 mb-4">
-                <Scale className="h-8 w-8 text-accent" />
+                <Scale className="h-8 w-8 text-blue-600 dark:text-blue-400" />
                 <span className="font-serif font-bold text-xl">Law Ease</span>
               </div>
-              <p className="text-secondary-foreground/80 mb-4 max-w-md">
+              <p className="text-slate-700 dark:text-slate-300 mb-4 max-w-md">
                 Making legal information accessible to everyone through technology, multilingual support, and
                 user-friendly interfaces.
               </p>
               <div className="flex space-x-4">
-                <Facebook className="h-5 w-5 text-secondary-foreground/60 hover:text-accent cursor-pointer transition-colors" />
-                <Twitter className="h-5 w-5 text-secondary-foreground/60 hover:text-accent cursor-pointer transition-colors" />
-                <Instagram className="h-5 w-5 text-secondary-foreground/60 hover:text-accent cursor-pointer transition-colors" />
-                <Linkedin className="h-5 w-5 text-secondary-foreground/60 hover:text-accent cursor-pointer transition-colors" />
+                <Facebook className="h-5 w-5 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors" />
+                <Twitter className="h-5 w-5 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors" />
+                <Instagram className="h-5 w-5 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors" />
+                <Linkedin className="h-5 w-5 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors" />
               </div>
             </div>
 
             {/* Quick Links */}
             <div>
-              <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
+              <h3 className="font-semibold text-lg mb-4 text-slate-900 dark:text-slate-100">Quick Links</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-secondary-foreground/80 hover:text-accent transition-colors">
+                  <a href="#" className="text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                     Home
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-secondary-foreground/80 hover:text-accent transition-colors">
+                  <a href="#" className="text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                     About Us
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-secondary-foreground/80 hover:text-accent transition-colors">
+                  <a href="#" className="text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                     Features
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-secondary-foreground/80 hover:text-accent transition-colors">
+                  <a href="#" className="text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                     Contact
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-secondary-foreground/80 hover:text-accent transition-colors">
+                  <a href="#" className="text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                     Privacy Policy
                   </a>
                 </li>
@@ -524,26 +614,26 @@ export default function LandingPage() {
 
             {/* Contact Info */}
             <div>
-              <h3 className="font-semibold text-lg mb-4">Contact</h3>
+              <h3 className="font-semibold text-lg mb-4 text-slate-900 dark:text-slate-100">Contact</h3>
               <div className="space-y-3">
                 <div className="flex items-center space-x-2">
-                  <Mail className="h-4 w-4 text-accent" />
-                  <span className="text-secondary-foreground/80">support@lawease.com</span>
+                  <Mail className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <span className="text-slate-700 dark:text-slate-300">support@lawease.com</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Phone className="h-4 w-4 text-accent" />
-                  <span className="text-secondary-foreground/80">+1 (555) 123-4567</span>
+                  <Phone className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <span className="text-slate-700 dark:text-slate-300">+1 (555) 123-4567</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <MapPin className="h-4 w-4 text-accent" />
-                  <span className="text-secondary-foreground/80">New Delhi, India</span>
+                  <MapPin className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <span className="text-slate-700 dark:text-slate-300">New Delhi, India</span>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="border-t border-secondary-foreground/20 mt-8 pt-8 text-center">
-            <p className="text-secondary-foreground/60">
+          <div className="border-t border-slate-300 dark:border-slate-700 mt-8 pt-8 text-center">
+            <p className="text-slate-600 dark:text-slate-400">
               © 2025 Law Ease. All rights reserved. Making justice accessible to all.
             </p>
           </div>

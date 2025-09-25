@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { signIn } from "next-auth/react"
 import { toast } from "sonner"
 import { registerUser } from "@/actions/auth.action"
 
@@ -19,7 +18,7 @@ function SignUp() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [isLoading, setIsLoading] = useState(false)
-    const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+    // const [isGoogleLoading, setIsGoogleLoading] = useState(false)
     const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -45,18 +44,18 @@ function SignUp() {
         }
     }
 
-    const handleGoogleSignUp = async () => {
-        setIsGoogleLoading(true)
-        try {
-            await signIn('google', {
-                callbackUrl: '/dashboard'
-            })
-        } catch (error) {
-            console.error('Google sign-up error:', error)
-            toast.error('Google sign-up failed')
-            setIsGoogleLoading(false)
-        }
-    }
+    // const handleGoogleSignUp = async () => {
+    //     setIsGoogleLoading(true)
+    //     try {
+    //         await signIn('google', {
+    //             callbackUrl: '/dashboard'
+    //         })
+    //     } catch (error) {
+    //         console.error('Google sign-up error:', error)
+    //         toast.error('Google sign-up failed')
+    //         setIsGoogleLoading(false)
+    //     }
+    // }
 
     return (
         <div className="min-h-screen w-full bg-white dark:bg-neutral-950 flex flex-col relative overflow-hidden">
@@ -170,7 +169,7 @@ function SignUp() {
                                 </Link>
                             </p>
                         </div>
-                        <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-700">
+                        {/* <div className="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-700">
                             <p className="text-xs text-center text-neutral-500 dark:text-neutral-400 mb-4">Or continue with</p>
                             <Button
                                 type="button"
@@ -199,7 +198,7 @@ function SignUp() {
                                 </svg>
                                 {isGoogleLoading ? "Signing up..." : "Continue with Google"}
                             </Button>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

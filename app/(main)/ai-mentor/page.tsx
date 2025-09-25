@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Textarea } from "@/components/ui/textarea"
 import { Bot, ArrowRight, Loader2, Scale, Sparkles, Volume2 } from "lucide-react"
 import Link from "next/link"
-import { VoiceMode } from "@/components/voice-mode"
+import { ElevenLabsVoice } from "@/components/elevenlabs-voice"
 import { 
   createLegalConsultation, 
   analyzeLegalProblem, 
@@ -16,12 +16,21 @@ import {
 } from "@/actions/ai-mentor.action"
 import { toast } from "sonner"
 
+interface LegalAnalysis {
+	applicableLaws: string[]
+	userRights: string[]
+	recommendedProcedures: string[]
+	importantDeadlines: string[]
+	precedentCases?: string[]
+}
+
 export default function AIMentorPage() {
 	const [problem, setProblem] = useState("")
 	const [conversationSummary, setConversationSummary] = useState("")
 	const [currentStep, setCurrentStep] = useState<'input' | 'analyzing' | 'preparing' | 'ready' | 'conversation' | 'summary'>('input')
 	const [consultationId, setConsultationId] = useState<string | null>(null)
 	const [sessionId, setSessionId] = useState<string | null>(null)
+	const [analysis, setAnalysis] = useState<LegalAnalysis | null>(null)
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
@@ -48,6 +57,7 @@ export default function AIMentorPage() {
 				return
 			}
 
+			setAnalysis(analysisResult.analysis)
 			setCurrentStep('preparing')
 
 			// Step 3: Prepare voice session
@@ -238,11 +248,13 @@ export default function AIMentorPage() {
 
 				{/* Voice Mode */}
 				{(currentStep === 'ready' || currentStep === 'conversation') && (
-					<VoiceMode
+					<ElevenLabsVoice
 						isActive={currentStep === 'conversation'}
 						onStart={startConversation}
 						onEnd={endConversation}
 						sessionId={sessionId}
+						legalAnalysis={analysis || undefined}
+						userProblem={problem}
 					/>
 				)}
 
