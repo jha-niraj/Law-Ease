@@ -14,7 +14,6 @@ declare module "next-auth" {
             bio?: string | null
             emailVerified?: Date | null
             roleExplicitlyChosen: boolean
-            onboardingCompleted?: boolean | null
         } & DefaultSession["user"]
     }
 

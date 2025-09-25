@@ -14,6 +14,27 @@ enum Role {
     ADMIN
 }
 
+enum ConsultationStatus {
+    ANALYZING
+    READY
+    IN_PROGRESS
+    COMPLETED
+    FAILED
+}
+
+enum LawType {
+    CONSTITUTIONAL
+    CIVIL
+    CRIMINAL
+    FAMILY
+    PROPERTY
+    LABOR
+    TAXATION
+    CORPORATE
+    CONSUMER
+    OTHER
+}
+
 model User {
     id                   String    @id @default(cuid())
     email                String    @unique
@@ -24,7 +45,6 @@ model User {
     role                 Role      @default(USER)
     roleExplicitlyChosen Boolean   @default(false)
 	createdAt            DateTime  @default(now())
-    onboardingCompleted  Boolean   @default(false)
 
     // Email verification
     verificationToken    String?   @unique
@@ -35,6 +55,7 @@ model User {
     resetTokenExpiry     DateTime?
 
     accounts              Account[]
+    legalConsultations    LegalConsultation[]
 
     @@index([email])
 }
@@ -60,4 +81,57 @@ model Account {
 
     @@unique([provider, providerAccountId])
     @@map("accounts")
+}
+
+model LegalConsultation {
+    id                    String              @id @default(cuid())
+    userId                String
+    problemDescription    String              @db.Text
+    legalAnalysis         Json?               // OpenAI response with legal info
+    conversationTranscript String?            @db.Text
+    conversationSummary   String?             @db.Text
+    status                ConsultationStatus  @default(ANALYZING)
+    elevenlabsSessionId   String?
+    createdAt             DateTime            @default(now())
+    updatedAt             DateTime            @updatedAt
+    
+    user                  User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+    knowledgeEntries      LegalKnowledgeEntry[]
+    voiceSessions         VoiceSession[]
+
+    @@index([userId])
+    @@index([status])
+}
+
+model LegalKnowledgeEntry {
+    id                String              @id @default(cuid())
+    consultationId    String
+    lawType           LawType
+    relevantSections  Json                // Specific law sections
+    legalProcedures   String?             @db.Text
+    userRights        String?             @db.Text
+    precedentCases    Json?               // Relevant case laws
+    createdAt         DateTime            @default(now())
+    
+    consultation      LegalConsultation   @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+
+    @@index([consultationId])
+    @@index([lawType])
+}
+
+model VoiceSession {
+    id                    String              @id @default(cuid())
+    consultationId        String
+    elevenlabsSessionId   String
+    sessionStatus         String              @default("preparing") // preparing, active, completed, failed
+    audioDuration         Int?                // in seconds
+    conversationQualityScore Float?
+    startedAt             DateTime?
+    endedAt               DateTime?
+    createdAt             DateTime            @default(now())
+    
+    consultation          LegalConsultation   @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+
+    @@index([consultationId])
+    @@index([elevenlabsSessionId])
 }

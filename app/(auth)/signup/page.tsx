@@ -86,9 +86,9 @@ function SignUp() {
             <div className="flex-1 flex items-center justify-center py-24">
                 <div className="w-full max-w-md relative z-10">
                     <div className="text-center mb-2">
-                        <h1 className="text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300">
-                            NyayMitra
-                        </h1>
+						<h1 className="text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300">
+							LawEase
+						</h1>
                         <div className="w-12 h-0.5 bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 mx-auto"></div>
                     </div>
                     <div className="bg-white/80 dark:bg-black/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-neutral-200/20 dark:border-neutral-800/20 p-8">

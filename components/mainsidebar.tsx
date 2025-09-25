@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { usePathname, useRouter } from "next/navigation"
-import { LogOut, ChevronRight, UserPlus, Users, BarChart3, MessageSquare, Settings, Home, Eye, Wallet } from "lucide-react"
+import { LogOut, ChevronRight, UserPlus, BarChart3, MessageSquare, Home, Eye, Wallet } from "lucide-react"
 import Link from "next/link"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { toast } from "sonner"
@@ -109,7 +109,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar }: SidebarProps) => {
 							>
 								<div className="whitespace-nowrap">
 									<h1 className="text-xl font-bold text-gray-900 dark:text-white">
-										NyayMitra
+										LawEase
 									</h1>
 								</div>
 							</motion.div>

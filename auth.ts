@@ -54,7 +54,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 								image: freshUser.image,
 								role: freshUser.role,
 								roleExplicitlyChosen: freshUser.roleExplicitlyChosen,
-								onboardingCompleted: freshUser.onboardingCompleted!,
 							};
 						} else {
 							throw new Error("Email verification not completed");
@@ -80,7 +79,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 						image: user.image,
 						role: user.role,
 						roleExplicitlyChosen: user.roleExplicitlyChosen,
-						onboardingCompleted: user.onboardingCompleted!,
 					};
 				} catch (error) {
 					console.error("Authorization error:", error);

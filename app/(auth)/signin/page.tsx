@@ -51,11 +51,7 @@ function SignInContent() {
 
 			if (result?.ok) {
 				toast.success('Welcome back!')
-				// For newly verified users, redirect to onboarding instead of dashboard
-				const redirectUrl = callbackUrl === '/dashboard' && searchParams.get('verified') === 'true'
-					? '/onboarding'
-					: callbackUrl
-				router.push(redirectUrl)
+				router.push(callbackUrl)
 			}
 
 		} catch (error) {
@@ -108,7 +104,7 @@ function SignInContent() {
 				<div className="w-full max-w-md relative z-10">
 					<div className="text-center mb-4">
 						<h1 className="text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300">
-							NyayMitra
+							LawEase
 						</h1>
 						<div className="w-12 h-0.5 bg-gradient-to-r from-neutral-900 to-neutral-700 dark:from-white dark:to-neutral-300 mx-auto"></div>
 					</div>

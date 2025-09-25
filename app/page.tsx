@@ -1,125 +1,554 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { Github, Shield, Zap, Code2, Star, ExternalLink } from "lucide-react";
-import Link from "next/link";
+import { Navbar } from "@/components/navbar"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Scale,
+  Users,
+  BookOpen,
+  MessageCircle,
+  Shield,
+  Globe,
+  TrendingUp,
+  Heart,
+  Gavel,
+  FileText,
+  Phone,
+  Mail,
+  MapPin,
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+} from "lucide-react"
 
-export default function App() {
-	const [isHovered, setIsHovered] = React.useState(false);
+export default function LandingPage() {
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar isLoggedIn={false} />
 
-	return (
-		<main className="h-screen bg-gradient-to-br from-slate-50 via-teal-50/30 to-emerald-50/50 relative overflow-hidden">
-			<div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(20,184,166,0.05),transparent_50%)] pointer-events-none"></div>
-			<div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(16,185,129,0.05),transparent_50%)] pointer-events-none"></div>
-			<div className="relative h-full flex items-center justify-center p-4">
-				<div className="max-w-5xl w-full h-full max-h-[95vh] flex flex-col">
-					<div className="bg-white/90 backdrop-blur-sm border border-gray-200/50 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden flex-1 flex flex-col">
-						<div className="bg-gradient-to-r from-teal-500 to-emerald-500 px-8 py-10 text-center relative overflow-hidden">
-							<div className="absolute inset-0 bg-gradient-to-r from-teal-600/20 to-emerald-600/20"></div>
-							<div className="relative z-10">
-								<div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-sm rounded-xl mb-4 shadow-lg">
-									<Shield className="w-8 h-8 text-white" />
-								</div>
-								<h1 className="text-4xl font-bold text-white mb-3 tracking-tight">
-									Next Auth Kit
-								</h1>
-								<p className="text-lg text-teal-50 font-medium">by Niraj Jha</p>
-							</div>
-						</div>
-						<div className="px-8 py-8 flex-1 flex flex-col">
-							<div className="text-center mb-8">
-								<h2 className="text-xl font-semibold text-gray-800 mb-3">
-									Streamlined Authentication for Modern Developers
-								</h2>
-								<p className="text-gray-600 max-w-3xl mx-auto leading-relaxed">
-									A clean, reliable starting point that eliminates the complexity of integrating Next Auth with Prisma,
-									designed for developers who value simplicity and reliability.
-								</p>
-							</div>
-							<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 flex-1">
-								<div className="group bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-100/50 hover:border-teal-200 hover:shadow-md transition-all duration-300">
-									<div className="text-center">
-										<div className="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow mx-auto mb-3">
-											<Zap className="w-5 h-5 text-white" />
-										</div>
-										<h3 className="text-gray-800 font-semibold text-sm mb-2">Fast Integration</h3>
-										<p className="text-gray-600 text-xs leading-relaxed">
-											Streamlined setup process for rapid development.
-										</p>
-									</div>
-								</div>
-								<div className="group bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-100/50 hover:border-emerald-200 hover:shadow-md transition-all duration-300">
-									<div className="text-center">
-										<div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow mx-auto mb-3">
-											<Code2 className="w-5 h-5 text-white" />
-										</div>
-										<h3 className="text-gray-800 font-semibold text-sm mb-2">Dependency Free</h3>
-										<p className="text-gray-600 text-xs leading-relaxed">
-											Eliminates common integration headaches.
-										</p>
-									</div>
-								</div>
-								<div className="group bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl p-5 border border-teal-100/50 hover:border-teal-200 hover:shadow-md transition-all duration-300">
-									<div className="text-center">
-										<div className="w-10 h-10 bg-teal-600 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow mx-auto mb-3">
-											<Shield className="w-5 h-5 text-white" />
-										</div>
-										<h3 className="text-gray-800 font-semibold text-sm mb-2">Prisma Ready</h3>
-										<p className="text-gray-600 text-xs leading-relaxed">
-											Seamless database integration included.
-										</p>
-									</div>
-								</div>
-								<div className="group bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-100/50 hover:border-emerald-200 hover:shadow-md transition-all duration-300">
-									<div className="text-center">
-										<div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow mx-auto mb-3">
-											<Star className="w-5 h-5 text-white" />
-										</div>
-										<h3 className="text-gray-800 font-semibold text-sm mb-2">Production Ready</h3>
-										<p className="text-gray-600 text-xs leading-relaxed">
-											Battle-tested and reliable foundation.
-										</p>
-									</div>
-								</div>
-							</div>
-							<div className="text-center">
-								<Link
-									href="https://github.com/jha-niraj/NextJS-starter-auth"
-									target="_blank"
-									rel="noopener noreferrer"
-									className="group inline-flex items-center gap-3 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg shadow-md"
-									onMouseEnter={() => setIsHovered(true)}
-									onMouseLeave={() => setIsHovered(false)}
-								>
-									<Github className={`w-5 h-5 transition-transform duration-300 ${isHovered ? 'rotate-12' : ''}`} />
-									<span>Star on GitHub</span>
-									<ExternalLink className="w-4 h-4 opacity-80" />
-								</Link>
-								<div className="flex items-center justify-center gap-2 text-gray-500 mt-4">
-									<Star className="w-4 h-4 text-amber-400 fill-current" />
-									<span className="text-sm font-medium">Help other developers discover this toolkit</span>
-								</div>
-							</div>
-						</div>
-						<div className="bg-gray-50/80 px-8 py-4 border-t border-gray-200/50">
-							<div className="flex items-center justify-center gap-6 text-gray-500 text-sm font-medium">
-								<div className="flex items-center gap-2">
-									<div className="w-2 h-2 bg-teal-500 rounded-full"></div>
-									<span>Open Source</span>
-								</div>
-								<div className="flex items-center gap-2">
-									<div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-									<span>TypeScript</span>
-								</div>
-								<div className="flex items-center gap-2">
-									<div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-									<span>Next.js 14+</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</main>
-	);
+      {/* Hero Section */}
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left side - Text content */}
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-4xl md:text-6xl font-serif font-bold text-foreground leading-tight animate-fade-in-up text-balance">
+                  Law Ease – Law Made Simple, Justice Made Accessible
+                </h1>
+                <p className="text-xl text-muted-foreground animate-slide-in-left animate-delay-200 text-pretty">
+                  Empowering citizens, students, and legal practitioners with accessible legal information, multilingual
+                  support, and innovative tools for justice.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 animate-slide-in-left animate-delay-400">
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                  onClick={() => window.location.href = '/signup'}
+                >
+                  Get Started
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-teal-300 text-teal-700 hover:bg-teal-50 dark:border-teal-600 dark:text-teal-300 dark:hover:bg-teal-950 font-semibold transition-all duration-300"
+                >
+                  Learn More
+                </Button>
+              </div>
+            </div>
+
+            {/* Right side - Illustration */}
+            <div className="relative animate-fade-in-up animate-delay-600">
+              <div className="bg-gradient-to-br from-teal-100 to-emerald-100 dark:from-teal-900/30 dark:to-emerald-900/30 rounded-2xl p-8 border border-teal-200 dark:border-teal-700">
+                <div className="flex items-center justify-center h-80">
+                  <div className="text-center space-y-6">
+                    <Scale className="h-24 w-24 text-teal-600 mx-auto" />
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-center space-x-4">
+                        <Users className="h-8 w-8 text-emerald-600" />
+                        <BookOpen className="h-8 w-8 text-emerald-600" />
+                        <Gavel className="h-8 w-8 text-emerald-600" />
+                      </div>
+                      <p className="text-sm text-teal-700 dark:text-teal-300 font-medium">Digital Justice Platform</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Problem Statement Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">
+              The Legal Access Challenge
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Millions struggle to understand their legal rights due to complex language, limited access, and language
+              barriers.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="mx-auto bg-accent/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                  <FileText className="h-8 w-8 text-accent" />
+                </div>
+                <CardTitle className="text-2xl font-bold text-accent">78%</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">of citizens find legal documents too complex to understand</p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="mx-auto bg-accent/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                  <Globe className="h-8 w-8 text-accent" />
+                </div>
+                <CardTitle className="text-2xl font-bold text-accent">500M+</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  people lack access to legal information in their native language
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="mx-auto bg-accent/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                  <TrendingUp className="h-8 w-8 text-accent" />
+                </div>
+                <CardTitle className="text-2xl font-bold text-accent">65%</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">increase in legal queries during digital transformation</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Vision & Mission Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-6">Our Vision & Mission</h2>
+              <div className="space-y-6">
+                <div className="border-l-4 border-accent pl-6">
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Vision</h3>
+                  <p className="text-muted-foreground">
+                    A world where legal knowledge is accessible to everyone, regardless of language, education, or
+                    economic status.
+                  </p>
+                </div>
+                <div className="border-l-4 border-secondary pl-6">
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Mission</h3>
+                  <p className="text-muted-foreground">
+                    To democratize legal information through technology, making justice accessible, understandable, and
+                    actionable for all.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-br from-accent/10 to-secondary/10 rounded-2xl p-8">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="text-center">
+                  <Heart className="h-12 w-12 text-accent mx-auto mb-3" />
+                  <h4 className="font-semibold text-foreground">Empathy</h4>
+                  <p className="text-sm text-muted-foreground">Understanding user needs</p>
+                </div>
+                <div className="text-center">
+                  <Shield className="h-12 w-12 text-accent mx-auto mb-3" />
+                  <h4 className="font-semibold text-foreground">Trust</h4>
+                  <p className="text-sm text-muted-foreground">Reliable legal information</p>
+                </div>
+                <div className="text-center">
+                  <Globe className="h-12 w-12 text-accent mx-auto mb-3" />
+                  <h4 className="font-semibold text-foreground">Accessibility</h4>
+                  <p className="text-sm text-muted-foreground">Available to everyone</p>
+                </div>
+                <div className="text-center">
+                  <BookOpen className="h-12 w-12 text-accent mx-auto mb-3" />
+                  <h4 className="font-semibold text-foreground">Education</h4>
+                  <p className="text-sm text-muted-foreground">Learning-focused approach</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Overview Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">
+              Powerful Features for Everyone
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Comprehensive tools designed to make legal information accessible and actionable
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="hover:shadow-lg transition-all hover:-translate-y-1">
+              <CardHeader>
+                <div className="bg-accent/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <Globe className="h-6 w-6 text-accent" />
+                </div>
+                <CardTitle>Multilingual Translation</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Translate complex legal documents into simple, understandable language in multiple regional languages.
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-all hover:-translate-y-1">
+              <CardHeader>
+                <div className="bg-accent/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <FileText className="h-6 w-6 text-accent" />
+                </div>
+                <CardTitle>Document Summarizer</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Get concise summaries of lengthy legal documents with key points highlighted for quick understanding.
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-all hover:-translate-y-1">
+              <CardHeader>
+                <div className="bg-accent/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <MessageCircle className="h-6 w-6 text-accent" />
+                </div>
+                <CardTitle>AI Legal Assistant</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Get instant answers to legal questions through our intelligent chatbot trained on legal databases.
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-all hover:-translate-y-1">
+              <CardHeader>
+                <div className="bg-accent/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <Users className="h-6 w-6 text-accent" />
+                </div>
+                <CardTitle>Legal Aid Matching</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Connect with qualified legal aid services and lawyers based on your location and case requirements.
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-all hover:-translate-y-1">
+              <CardHeader>
+                <div className="bg-accent/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <Gavel className="h-6 w-6 text-accent" />
+                </div>
+                <CardTitle>Virtual Court Access</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Access digital court proceedings and understand verdicts with simplified explanations and audio
+                  support.
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-all hover:-translate-y-1">
+              <CardHeader>
+                <div className="bg-accent/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <BookOpen className="h-6 w-6 text-accent" />
+                </div>
+                <CardTitle>Educational Resources</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Access comprehensive study materials, videos, and interactive content for legal education and
+                  awareness.
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* User Roles Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">Designed for Every User</h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Tailored experiences for different user types and their unique legal needs
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="text-center hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer group">
+              <CardHeader className="pb-4">
+                <div className="mx-auto bg-accent/10 w-20 h-20 rounded-full flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
+                  <BookOpen className="h-10 w-10 text-accent" />
+                </div>
+                <CardTitle className="text-xl">Students</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center">
+                  Study materials, translations, summaries, and interactive learning tools
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer group">
+              <CardHeader className="pb-4">
+                <div className="mx-auto bg-accent/10 w-20 h-20 rounded-full flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
+                  <Users className="h-10 w-10 text-accent" />
+                </div>
+                <CardTitle className="text-xl">Public</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center">
+                  Legal awareness, rights information, and access to legal aid services
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer group">
+              <CardHeader className="pb-4">
+                <div className="mx-auto bg-accent/10 w-20 h-20 rounded-full flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
+                  <Gavel className="h-10 w-10 text-accent" />
+                </div>
+                <CardTitle className="text-xl">Practitioners</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center">
+                  Advanced tools, case management, and professional resources
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer group">
+              <CardHeader className="pb-4">
+                <div className="mx-auto bg-accent/10 w-20 h-20 rounded-full flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors">
+                  <Shield className="h-10 w-10 text-accent" />
+                </div>
+                <CardTitle className="text-xl">Administrators</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center">
+                  Platform management, content moderation, and system oversight
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Accessibility & Inclusivity Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">
+              Accessibility & Inclusivity First
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Breaking down barriers to ensure legal information is accessible to everyone
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="bg-accent/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <MessageCircle className="h-6 w-6 text-accent" />
+                </div>
+                <CardTitle>Voice Support</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Audio playback of legal content for visually impaired users and those who prefer auditory learning.
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="bg-accent/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <Globe className="h-6 w-6 text-accent" />
+                </div>
+                <CardTitle>Multilingual Platform</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Support for multiple regional languages with culturally appropriate legal interpretations and
+                  explanations.
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="bg-accent/10 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
+                  <Phone className="h-6 w-6 text-accent" />
+                </div>
+                <CardTitle>Multi-Channel Access</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  Access through WhatsApp, Telegram, SMS, and voice calls for users with limited internet connectivity.
+                </CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Impact Metrics Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4">Making a Real Impact</h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Transforming lives through accessible legal information and services
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="bg-accent/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="h-10 w-10 text-accent" />
+              </div>
+              <div className="text-3xl font-bold text-foreground mb-2">1M+</div>
+              <p className="text-muted-foreground">People Helped</p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-accent/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Globe className="h-10 w-10 text-accent" />
+              </div>
+              <div className="text-3xl font-bold text-foreground mb-2">15+</div>
+              <p className="text-muted-foreground">Languages Supported</p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-accent/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FileText className="h-10 w-10 text-accent" />
+              </div>
+              <div className="text-3xl font-bold text-foreground mb-2">50K+</div>
+              <p className="text-muted-foreground">Documents Simplified</p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-accent/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="h-10 w-10 text-accent" />
+              </div>
+              <div className="text-3xl font-bold text-foreground mb-2">95%</div>
+              <p className="text-muted-foreground">User Satisfaction</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-secondary text-secondary-foreground py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-8">
+            {/* Logo and Description */}
+            <div className="md:col-span-2">
+              <div className="flex items-center space-x-2 mb-4">
+                <Scale className="h-8 w-8 text-accent" />
+                <span className="font-serif font-bold text-xl">Law Ease</span>
+              </div>
+              <p className="text-secondary-foreground/80 mb-4 max-w-md">
+                Making legal information accessible to everyone through technology, multilingual support, and
+                user-friendly interfaces.
+              </p>
+              <div className="flex space-x-4">
+                <Facebook className="h-5 w-5 text-secondary-foreground/60 hover:text-accent cursor-pointer transition-colors" />
+                <Twitter className="h-5 w-5 text-secondary-foreground/60 hover:text-accent cursor-pointer transition-colors" />
+                <Instagram className="h-5 w-5 text-secondary-foreground/60 hover:text-accent cursor-pointer transition-colors" />
+                <Linkedin className="h-5 w-5 text-secondary-foreground/60 hover:text-accent cursor-pointer transition-colors" />
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
+              <ul className="space-y-2">
+                <li>
+                  <a href="#" className="text-secondary-foreground/80 hover:text-accent transition-colors">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-secondary-foreground/80 hover:text-accent transition-colors">
+                    About Us
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-secondary-foreground/80 hover:text-accent transition-colors">
+                    Features
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-secondary-foreground/80 hover:text-accent transition-colors">
+                    Contact
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="text-secondary-foreground/80 hover:text-accent transition-colors">
+                    Privacy Policy
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Contact Info */}
+            <div>
+              <h3 className="font-semibold text-lg mb-4">Contact</h3>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-2">
+                  <Mail className="h-4 w-4 text-accent" />
+                  <span className="text-secondary-foreground/80">support@lawease.com</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Phone className="h-4 w-4 text-accent" />
+                  <span className="text-secondary-foreground/80">+1 (555) 123-4567</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <MapPin className="h-4 w-4 text-accent" />
+                  <span className="text-secondary-foreground/80">New Delhi, India</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-secondary-foreground/20 mt-8 pt-8 text-center">
+            <p className="text-secondary-foreground/60">
+              © 2025 Law Ease. All rights reserved. Making justice accessible to all.
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
 }
