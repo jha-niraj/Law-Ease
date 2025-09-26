@@ -23,16 +23,17 @@ export function Navbar({ isLoggedIn = false, userType = null }: NavbarProps) {
             return
         }
 
-        if (isLoggedIn) {
+        if (section === "home") {
+            router.push("/")
+        } else if (section === "about") {
+            router.push("/about")
+        } else if (section === "contact") {
+            router.push("/contact")
+        } else if (isLoggedIn) {
             if (section === "student" && userType === "student") {
                 router.push("/student")
             } else if (section === "public" && userType === "public") {
                 router.push("/public")
-            } else if (section === "home") {
-                router.push("/")
-            } else {
-                // For other sections like 'about', 'contact' or if userType doesn't match section
-                // In a real app, you might have specific routes for these or handle them differently
             }
         }
     }

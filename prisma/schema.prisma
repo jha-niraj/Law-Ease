@@ -304,3 +304,22 @@ model LawyerReview {
     @@index([lawyerId])
     @@index([rating])
 }
+
+// Contact Messages Model
+model ContactMessage {
+    id          String      @id @default(cuid())
+    name        String
+    email       String
+    subject     String
+    message     String      @db.Text
+    userType    String?     // GENERAL, LAWYER, STUDENT, SUPPORT
+    isRead      Boolean     @default(false)
+    isResolved  Boolean     @default(false)
+    adminNotes  String?     @db.Text
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+
+    @@index([email])
+    @@index([isRead])
+    @@index([createdAt])
+}
