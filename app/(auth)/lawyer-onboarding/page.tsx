@@ -64,6 +64,7 @@ function LawyerOnboardingContent() {
     })
 
     const [availability, setAvailability] = useState<AvailabilitySlot[]>([])
+    const [otherSpecialization, setOtherSpecialization] = useState("")
     const [newLanguage, setNewLanguage] = useState("")
 
     useEffect(() => {
@@ -84,6 +85,19 @@ function LawyerOnboardingContent() {
                 ? prev.selectedSpecializations.filter(s => s !== specialization)
                 : [...prev.selectedSpecializations, specialization]
         }))
+    }
+
+    const applyOtherSpecialization = () => {
+        const value = otherSpecialization.trim().toUpperCase().replace(/\s+/g, '_')
+        if (!value) return
+        if (!formData.selectedSpecializations.includes(value)) {
+            setFormData(prev => ({
+                ...prev,
+                selectedSpecializations: [...prev.selectedSpecializations, value]
+            }))
+            setOtherSpecialization("")
+            toast.success("Added custom specialization")
+        }
     }
 
     const addLanguage = () => {
@@ -110,6 +124,41 @@ function LawyerOnboardingContent() {
             endTime: "17:00",
             isAvailable: true
         }])
+    }
+
+    const copySlotToWeekend = (index: number) => {
+        const slot = availability[index]
+        if (!slot) return
+        const weekendDays = [0, 6]
+        const newSlots: AvailabilitySlot[] = weekendDays.map(day => ({
+            dayOfWeek: day,
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+            isAvailable: slot.isAvailable
+        }))
+        // Remove existing weekend slots to avoid duplicates
+        setAvailability(prev => [
+            ...prev.filter(s => !weekendDays.includes(s.dayOfWeek)),
+            ...newSlots
+        ])
+        toast.success("Applied slot to weekend")
+    }
+
+    const copySlotToWeekdays = (index: number) => {
+        const slot = availability[index]
+        if (!slot) return
+        const weekdays = [1,2,3,4,5]
+        const newSlots: AvailabilitySlot[] = weekdays.map(day => ({
+            dayOfWeek: day,
+            startTime: slot.startTime,
+            endTime: slot.endTime,
+            isAvailable: slot.isAvailable
+        }))
+        setAvailability(prev => [
+            ...prev.filter(s => !weekdays.includes(s.dayOfWeek)),
+            ...newSlots
+        ])
+        toast.success("Applied slot to all weekdays")
     }
 
     const updateAvailabilitySlot = (index: number, field: string, value: string | number | boolean) => {
@@ -161,7 +210,7 @@ function LawyerOnboardingContent() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 p-6">
+        <div className="min-h-screen bg-white dark:bg-neutral-950 p-6">
             <div className="max-w-4xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-8">
@@ -200,7 +249,7 @@ function LawyerOnboardingContent() {
                 </div>
 
                 {/* Step Content */}
-                <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700">
+                <Card className="bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 shadow-xl rounded-2xl">
                     <CardContent className="p-8">
                         <AnimatePresence mode="wait">
                             <motion.div
@@ -322,6 +371,18 @@ function LawyerOnboardingContent() {
                                             ))}
                                         </div>
 
+                                        {/* Other specialization input when OTHER is selected */}
+                                        {formData.selectedSpecializations.includes('OTHER') && (
+                                            <div className="flex items-center gap-2 mt-2">
+                                                <Input
+                                                    placeholder="Enter your specialization"
+                                                    value={otherSpecialization}
+                                                    onChange={(e) => setOtherSpecialization(e.target.value)}
+                                                />
+                                                <Button type="button" variant="outline" onClick={applyOtherSpecialization}>Add</Button>
+                                            </div>
+                                        )}
+
                                         <div className="space-y-2">
                                             <Label htmlFor="practiceAreas">Detailed Practice Areas</Label>
                                             <Textarea
@@ -365,7 +426,7 @@ function LawyerOnboardingContent() {
 
                                         <div className="space-y-4">
                                             {availability.map((slot, index) => (
-                                                <div key={index} className="flex items-center gap-4 p-4 border rounded-lg">
+                                                <div key={index} className="flex flex-wrap items-center gap-3 p-4 border rounded-lg">
                                                     <Select
                                                         value={slot.dayOfWeek.toString()}
                                                         onValueChange={(value) => updateAvailabilitySlot(index, 'dayOfWeek', parseInt(value))}
@@ -416,14 +477,18 @@ function LawyerOnboardingContent() {
                                                         </SelectContent>
                                                     </Select>
 
-                                                    <Button
-                                                        type="button"
-                                                        variant="destructive"
-                                                        size="sm"
-                                                        onClick={() => removeAvailabilitySlot(index)}
-                                                    >
-                                                        Remove
-                                                    </Button>
+                                                    <div className="flex gap-2 ml-auto">
+                                                        <Button type="button" variant="outline" size="sm" onClick={() => copySlotToWeekdays(index)}>Copy to Weekdays</Button>
+                                                        <Button type="button" variant="outline" size="sm" onClick={() => copySlotToWeekend(index)}>Copy to Weekend</Button>
+                                                        <Button
+                                                            type="button"
+                                                            variant="destructive"
+                                                            size="sm"
+                                                            onClick={() => removeAvailabilitySlot(index)}
+                                                        >
+                                                            Remove
+                                                        </Button>
+                                                    </div>
                                                 </div>
                                             ))}
 

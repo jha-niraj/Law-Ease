@@ -8,38 +8,38 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 // Contact form schema
 const contactSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
-  email: z.string().email("Invalid email address"),
-  subject: z.string().min(5, "Subject must be at least 5 characters").max(200, "Subject must be less than 200 characters"),
-  message: z.string().min(20, "Message must be at least 20 characters").max(2000, "Message must be less than 2000 characters"),
-  userType: z.enum(["GENERAL", "LAWYER", "STUDENT", "SUPPORT"]).optional(),
+    name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name must be less than 100 characters"),
+    email: z.string().email("Invalid email address"),
+    subject: z.string().min(5, "Subject must be at least 5 characters").max(200, "Subject must be less than 200 characters"),
+    message: z.string().min(20, "Message must be at least 20 characters").max(2000, "Message must be less than 2000 characters"),
+    userType: z.enum(["GENERAL", "LAWYER", "STUDENT", "SUPPORT"]).optional(),
 })
 
 export type ContactFormInput = z.infer<typeof contactSchema>
 
 export async function submitContactForm(data: ContactFormInput) {
-  try {
-    // Validate the input
-    const validatedData = contactSchema.parse(data)
-
-    // Save to database
-    const contactMessage = await prisma.contactMessage.create({
-      data: {
-        name: validatedData.name,
-        email: validatedData.email,
-        subject: validatedData.subject,
-        message: validatedData.message,
-        userType: validatedData.userType || "GENERAL",
-      }
-    })
-
-    // Send notification email to admin
     try {
-      await resend.emails.send({
-        from: "LawEase Contact <noreply@nirajjha.xyz>",
-        to: "admin@lawease.in", // Replace with actual admin email
-        subject: `New Contact Form Submission: ${validatedData.subject}`,
-        html: `
+        // Validate the input
+        const validatedData = contactSchema.parse(data)
+
+        // Save to database
+        const contactMessage = await prisma.contactMessage.create({
+            data: {
+                name: validatedData.name,
+                email: validatedData.email,
+                subject: validatedData.subject,
+                message: validatedData.message,
+                userType: validatedData.userType || "GENERAL",
+            }
+        })
+
+        // Send notification email to admin
+        try {
+            await resend.emails.send({
+                from: "LawEase Contact <noreply@nirajjha.xyz>",
+                to: "admin@lawease.in", // Replace with actual admin email
+                subject: `New Contact Form Submission: ${validatedData.subject}`,
+                html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: linear-gradient(135deg, #3b82f6, #6366f1); padding: 30px; text-align: center;">
               <h1 style="color: white; margin: 0; font-size: 28px;">New Contact Form Submission</h1>
@@ -74,19 +74,19 @@ export async function submitContactForm(data: ContactFormInput) {
             </div>
           </div>
         `
-      })
-    } catch (emailError) {
-      console.error("Failed to send notification email:", emailError)
-      // Don't fail the form submission if email fails
-    }
+            })
+        } catch (emailError) {
+            console.error("Failed to send notification email:", emailError)
+            // Don't fail the form submission if email fails
+        }
 
-    // Send confirmation email to user
-    try {
-      await resend.emails.send({
-        from: "LawEase Support <noreply@nirajjha.xyz>",
-        to: validatedData.email,
-        subject: "Thank you for contacting LawEase - We'll be in touch soon!",
-        html: `
+        // Send confirmation email to user
+        try {
+            await resend.emails.send({
+                from: "LawEase Support <noreply@nirajjha.xyz>",
+                to: validatedData.email,
+                subject: "Thank you for contacting LawEase - We'll be in touch soon!",
+                html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: linear-gradient(135deg, #3b82f6, #6366f1); padding: 30px; text-align: center;">
               <h1 style="color: white; margin: 0; font-size: 28px;">Thank You for Reaching Out!</h1>
@@ -150,123 +150,123 @@ export async function submitContactForm(data: ContactFormInput) {
             </div>
           </div>
         `
-      })
-    } catch (emailError) {
-      console.error("Failed to send confirmation email:", emailError)
-      // Don't fail the form submission if email fails
-    }
+            })
+        } catch (emailError) {
+            console.error("Failed to send confirmation email:", emailError)
+            // Don't fail the form submission if email fails
+        }
 
-    return {
-      success: true,
-      message: "Thank you for your message! We'll get back to you within 24 hours.",
-      messageId: contactMessage.id
-    }
+        return {
+            success: true,
+            message: "Thank you for your message! We'll get back to you within 24 hours.",
+            messageId: contactMessage.id
+        }
 
-  } catch (error) {
-    console.error("Error submitting contact form:", error)
-    
-    if (error instanceof z.ZodError) {
-      return {
-        success: false,
-        error: error.issues[0].message,
-        field: error.issues[0].path[0]
-      }
+    } catch (error) {
+        console.error("Error submitting contact form:", error)
+
+        if (error instanceof z.ZodError) {
+            return {
+                success: false,
+                error: error.issues[0].message,
+                field: error.issues[0].path[0]
+            }
+        }
+
+        return {
+            success: false,
+            error: "Failed to submit your message. Please try again later."
+        }
     }
-    
-    return {
-      success: false,
-      error: "Failed to submit your message. Please try again later."
-    }
-  }
 }
 
 export async function getContactMessages(page: number = 1, limit: number = 20) {
-  try {
-    const skip = (page - 1) * limit
+    try {
+        const skip = (page - 1) * limit
 
-    const [messages, totalCount] = await Promise.all([
-      prisma.contactMessage.findMany({
-        skip,
-        take: limit,
-        orderBy: { createdAt: 'desc' },
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          subject: true,
-          message: true,
-          userType: true,
-          isRead: true,
-          isResolved: true,
-          createdAt: true,
+        const [messages, totalCount] = await Promise.all([
+            prisma.contactMessage.findMany({
+                skip,
+                take: limit,
+                orderBy: { createdAt: 'desc' },
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    subject: true,
+                    message: true,
+                    userType: true,
+                    isRead: true,
+                    isResolved: true,
+                    createdAt: true,
+                }
+            }),
+            prisma.contactMessage.count()
+        ])
+
+        return {
+            success: true,
+            messages,
+            pagination: {
+                page,
+                limit,
+                totalCount,
+                totalPages: Math.ceil(totalCount / limit)
+            }
         }
-      }),
-      prisma.contactMessage.count()
-    ])
 
-    return {
-      success: true,
-      messages,
-      pagination: {
-        page,
-        limit,
-        totalCount,
-        totalPages: Math.ceil(totalCount / limit)
-      }
+    } catch (error) {
+        console.error("Error fetching contact messages:", error)
+        return {
+            success: false,
+            error: "Failed to fetch contact messages"
+        }
     }
-
-  } catch (error) {
-    console.error("Error fetching contact messages:", error)
-    return {
-      success: false,
-      error: "Failed to fetch contact messages"
-    }
-  }
 }
 
 export async function markMessageAsRead(messageId: string) {
-  try {
-    await prisma.contactMessage.update({
-      where: { id: messageId },
-      data: { isRead: true, updatedAt: new Date() }
-    })
+    try {
+        await prisma.contactMessage.update({
+            where: { id: messageId },
+            data: { isRead: true, updatedAt: new Date() }
+        })
 
-    return {
-      success: true,
-      message: "Message marked as read"
-    }
+        return {
+            success: true,
+            message: "Message marked as read"
+        }
 
-  } catch (error) {
-    console.error("Error marking message as read:", error)
-    return {
-      success: false,
-      error: "Failed to update message status"
+    } catch (error) {
+        console.error("Error marking message as read:", error)
+        return {
+            success: false,
+            error: "Failed to update message status"
+        }
     }
-  }
 }
 
 export async function markMessageAsResolved(messageId: string, adminNotes?: string) {
-  try {
-    await prisma.contactMessage.update({
-      where: { id: messageId },
-      data: { 
-        isResolved: true, 
-        isRead: true,
-        adminNotes,
-        updatedAt: new Date() 
-      }
-    })
+    try {
+        await prisma.contactMessage.update({
+            where: { id: messageId },
+            data: {
+                isResolved: true,
+                isRead: true,
+                adminNotes,
+                updatedAt: new Date()
+            }
+        })
 
-    return {
-      success: true,
-      message: "Message marked as resolved"
-    }
+        return {
+            success: true,
+            message: "Message marked as resolved"
+        }
 
-  } catch (error) {
-    console.error("Error marking message as resolved:", error)
-    return {
-      success: false,
-      error: "Failed to update message status"
+    } catch (error) {
+        console.error("Error marking message as resolved:", error)
+        return {
+            success: false,
+            error: "Failed to update message status"
+        }
     }
-  }
 }

@@ -45,12 +45,8 @@ function SignUp() {
             console.log("Signup Result: " + result?.message);
 
             toast.success('Account created successfully! Please check your email for verification code.')
-            
-            if (userType === 'LAWYER') {
-                router.push(`/lawyer-onboarding?email=${encodeURIComponent(email)}`)
-            } else {
-                router.push(`/verify?email=${encodeURIComponent(email)}`)
-            }
+            // Always verify first; onboarding happens after OTP verification for lawyers
+            router.push(`/verify?email=${encodeURIComponent(email)}&role=${encodeURIComponent(userType)}`)
         } catch (error) {
             console.error('Registration error:', error)
             toast.error(error instanceof Error ? error.message : 'Registration failed')

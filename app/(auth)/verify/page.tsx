@@ -132,9 +132,18 @@ function VerifyContent() {
 				})
 
                 if (signInResult?.ok) {
-                    setTimeout(() => {
-                        router.push('/dashboard')
-                    }, 2000)
+                    // After successful verification/sign-in, route based on role
+                    // We pass along the email so onboarding can prefill if needed
+                    const role = searchParams.get('role')
+                    if (role === 'LAWYER') {
+                        setTimeout(() => {
+                            router.push(`/lawyer-onboarding?email=${encodeURIComponent(email)}`)
+                        }, 1500)
+                    } else {
+                        setTimeout(() => {
+                            router.push('/dashboard')
+                        }, 1500)
+                    }
                 } else {
                     setTimeout(() => {
                         router.push('/signin?verified=true')
